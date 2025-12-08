@@ -3,9 +3,13 @@
         <SectionTitle :title="'Descrição da Cena'" :description="result.descricao_cena" />
 
         <PhotoAnalysisObjects :objects="result.objetos_identificados" />
-        <PhotoAnalysisPeople :people="result.pessoas" />
-        <PhotoAnalysisLocation :location="result.local_ambiente" />
-        <PhotoAnalysisStyle :photoStyle="result.estilo_foto" />
+
+        <div class="dashboard-row">
+            <PhotoAnalysisPeople :people="result.pessoas" />
+            <PhotoAnalysisLocation :location="result.local_ambiente" />
+            <PhotoAnalysisStyle :photoStyle="result.estilo_foto" />
+        </div>
+
         <PhotoAnalysisSentiment :sentiment="result.sentimento_transmitido" />
         <PhotoAnalysisNotes :notes="result.observacoes_adicionais" />
     </div>
@@ -20,6 +24,7 @@ import PhotoAnalysisLocation from '@/components/PhotoAnalysisLocation.vue';
 import PhotoAnalysisStyle from '@/components/PhotoAnalysisStyle.vue';
 import PhotoAnalysisSentiment from '@/components/PhotoAnalysisSentiment.vue';
 import PhotoAnalysisNotes from '@/components/PhotoAnalysisNotes.vue';
+
 defineProps<{ result: PhotoAnalysisResult }>();
 </script>
 
@@ -31,5 +36,51 @@ defineProps<{ result: PhotoAnalysisResult }>();
     padding: 2rem;
     margin-top: 2rem;
     margin-bottom: 2rem;
+}
+
+.dashboard-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+    align-items: stretch;
+}
+
+.dashboard-row>* {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+    min-height: 100%;
+}
+
+@media (min-width: 900px) {
+    .dashboard-row {
+        gap: 2rem;
+    }
+
+    .dashboard-row>* {
+        min-width: 250px;
+        max-width: 33%;
+        height: 100%;
+    }
+}
+
+@media (max-width: 900px) {
+    .dashboard-row {
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .dashboard-row>* {
+        max-width: 100%;
+        min-height: unset;
+    }
 }
 </style>

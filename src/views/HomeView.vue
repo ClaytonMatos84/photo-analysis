@@ -1,48 +1,36 @@
-<script setup lang="ts">
-import { ref } from 'vue';
-import FileUpload from 'primevue/fileupload';
-import MainLayout from '@/components/MainLayout.vue';
-import PhotoAnalysisService from '@/services/PhotoAnalysisService';
-import PhotoAnalysisDashboard from '@/components/PhotoAnalysisDashboard.vue';
-import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
-
-const selectedFile = ref<File | null>(null);
-const analysisResult = ref<PhotoAnalysisResult | null>(null);
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function uploadImage(event: any) {
-    const file = event.files?.[0] || event.target?.files?.[0] || null;
-    selectedFile.value = file;
-    if (!selectedFile.value) return;
-    try {
-        const result = await PhotoAnalysisService.sendPhotoBinary(selectedFile.value) as PhotoAnalysisResult;
-        analysisResult.value = result;
-    } catch (error) {
-        console.error('Erro ao enviar imagem:', error);
-    }
-}
-</script>
-
-
 <template>
     <MainLayout>
         <template #default>
             <main class="upload-main">
-                <header class="upload-header">
-                    <h2>Upload de Imagem</h2>
-                    <p>Envie uma imagem nos formatos PNG, JPG ou JPEG para análise.</p>
+                <header class="upload-header prime-header">
+                    <span class="prime-header-title">
+                        <i class="pi pi-upload"></i> Enviar imagem
+                    </span>
+                    <p class="prime-header-desc">
+                        Envie uma imagem nos formatos <strong>PNG, JPG ou JPEG</strong> para análise.
+                    </p>
+
+                    <PhotoUploadForm @analysis="handleAnalysis" />
                 </header>
-                <div class="upload-form">
-                    <FileUpload name="file" url="http://localhost:5678/webhook/analise-foto"
-                        accept="image/png, image/jpeg, image/jpg" :showUploadButton="true" :showCancelButton="true"
-                        :multiple="false" @upload="uploadImage($event)" chooseLabel="Selecionar" uploadLabel="Enviar"
-                        cancelLabel="Cancelar" />
-                </div>
                 <PhotoAnalysisDashboard v-if="analysisResult" :result="analysisResult" />
             </main>
         </template>
     </MainLayout>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+import MainLayout from '@/components/MainLayout.vue';
+import PhotoUploadForm from '@/components/PhotoUploadForm.vue';
+import PhotoAnalysisDashboard from '@/components/PhotoAnalysisDashboard.vue';
+import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
+
+const analysisResult = ref<PhotoAnalysisResult | null>(null);
+
+function handleAnalysis(result: PhotoAnalysisResult) {
+    analysisResult.value = result;
+}
+</script>
 
 <style scoped>
 .upload-main {
@@ -51,29 +39,35 @@ async function uploadImage(event: any) {
     align-items: center;
 }
 
-.upload-header {
-    text-align: center;
+.prime-header {
+    width: 100%;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+    padding: 1.5rem 2rem;
     margin-bottom: 2rem;
+    text-align: center;
 }
 
-.upload-header h1 {
-    font-size: 2rem;
-    color: #0e4d8b;
+.prime-header-title {
+    color: var(--primary-color, #1976d2);
+    font-size: 1.3rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
     margin-bottom: 0.5rem;
 }
 
-.upload-header p {
-    color: #555;
-    font-size: 1rem;
-}
-
-.upload-form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    align-items: center;
-    background-color: #f0f0f0;
-    margin-bottom: 10px;
+.prime-header-desc {
+    font-size: 1.05rem;
+    color: #333;
+    background: var(--background-color, #f4f6fa);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0 auto;
+    margin-bottom: 1.5rem;
+    display: inline-block;
 }
 </style>
