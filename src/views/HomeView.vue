@@ -11,15 +11,12 @@ const analysisResult = ref<PhotoAnalysisResult | null>(null);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function uploadImage(event: any) {
-    console.log('Upload event:', event);
-
     const file = event.files?.[0] || event.target?.files?.[0] || null;
     selectedFile.value = file;
     if (!selectedFile.value) return;
     try {
         const result = await PhotoAnalysisService.sendPhotoBinary(selectedFile.value) as PhotoAnalysisResult;
         analysisResult.value = result;
-        console.log('Resultado da análise:', result);
     } catch (error) {
         console.error('Erro ao enviar imagem:', error);
     }

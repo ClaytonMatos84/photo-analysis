@@ -1,21 +1,37 @@
 <template>
-    <div class="objects-card">
-        <h3>Objetos Identificados</h3>
-        <ul class="objects-list">
-            <li v-for="obj in objects" :key="obj" class="objects-tag">
-                <i class="pi pi-tag"></i> {{ obj }}
-            </li>
-        </ul>
-    </div>
+    <Card>
+        <template #title>
+            <span class="section-title-text">Objetos Identificados</span>
+        </template>
+        <template #content>
+            <div class="objects-card-content">
+                <ul class="objects-list">
+                    <li v-for="obj in objects" :key="obj" class="objects-tag">
+                        <i class="pi pi-tag"></i> {{ obj }}
+                    </li>
+                </ul>
+            </div>
+        </template>
+    </Card>
 </template>
 
 <script lang="ts" setup>
 import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
+import Card from 'primevue/card';
 defineProps<{ objects: PhotoAnalysisResult['objetos_identificados'] }>();
 </script>
 
 <style scoped>
-.objects-card {
+.section-title-text {
+    color: var(--primary-color, #1976d2);
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    display: block;
+    text-align: left;
+}
+
+.objects-card-content {
     background: #e3eaf3;
     border-radius: 8px;
     padding: 1rem;

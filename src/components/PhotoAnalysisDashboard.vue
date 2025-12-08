@@ -1,37 +1,25 @@
 <template>
     <div class="dashboard-card">
-        <h2 class="dashboard-title">Descrição da Cena</h2>
-        <p class="dashboard-desc">{{ result.descricao_cena }}</p>
+        <SectionTitle :title="'Descrição da Cena'" :description="result.descricao_cena" />
 
         <PhotoAnalysisObjects :objects="result.objetos_identificados" />
         <PhotoAnalysisPeople :people="result.pessoas" />
-
-        <div class="dashboard-section">
-            <h3>Local/Ambiente</h3>
-            <p>{{ result.local_ambiente }}</p>
-        </div>
-
-        <div class="dashboard-section">
-            <h3>Estilo da Foto</h3>
-            <p>{{ result.estilo_foto }}</p>
-        </div>
-
-        <div class="dashboard-section">
-            <h3>Sentimento Transmitido</h3>
-            <p>{{ result.sentimento_transmitido }}</p>
-        </div>
-
-        <div class="dashboard-section">
-            <h3>Observações Adicionais</h3>
-            <p>{{ result.observacoes_adicionais }}</p>
-        </div>
+        <PhotoAnalysisLocation :location="result.local_ambiente" />
+        <PhotoAnalysisStyle :photoStyle="result.estilo_foto" />
+        <PhotoAnalysisSentiment :sentiment="result.sentimento_transmitido" />
+        <PhotoAnalysisNotes :notes="result.observacoes_adicionais" />
     </div>
 </template>
 
 <script lang="ts" setup>
 import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
-import PhotoAnalysisObjects from './PhotoAnalysisObjects.vue';
-import PhotoAnalysisPeople from './PhotoAnalysisPeople.vue';
+import PhotoAnalysisObjects from '@/components/PhotoAnalysisObjects.vue';
+import PhotoAnalysisPeople from '@/components/PhotoAnalysisPeople.vue';
+import SectionTitle from '@/components/SectionTitle.vue';
+import PhotoAnalysisLocation from '@/components/PhotoAnalysisLocation.vue';
+import PhotoAnalysisStyle from '@/components/PhotoAnalysisStyle.vue';
+import PhotoAnalysisSentiment from '@/components/PhotoAnalysisSentiment.vue';
+import PhotoAnalysisNotes from '@/components/PhotoAnalysisNotes.vue';
 defineProps<{ result: PhotoAnalysisResult }>();
 </script>
 
@@ -43,19 +31,5 @@ defineProps<{ result: PhotoAnalysisResult }>();
     padding: 2rem;
     margin-top: 2rem;
     margin-bottom: 2rem;
-}
-
-.dashboard-title {
-    color: var(--primary-color, #1976d2);
-    margin-bottom: 1rem;
-}
-
-.dashboard-desc {
-    font-size: 1.1rem;
-    margin-bottom: 1.5rem;
-}
-
-.dashboard-section {
-    margin-bottom: 1.2rem;
 }
 </style>

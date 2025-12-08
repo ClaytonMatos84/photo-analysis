@@ -1,12 +1,11 @@
 <template>
     <Card>
         <template #title>
-            <span class="section-title-text">Pessoas</span>
+            <span class="section-title-text">Local/Ambiente</span>
         </template>
         <template #content>
-            <div class="people-card-content">
-                <p><strong>Quantidade:</strong> {{ people.quantidade }}</p>
-                <p>{{ people.descricao }}</p>
+            <div class="location-card-content">
+                <p>{{ location }}</p>
             </div>
         </template>
     </Card>
@@ -14,8 +13,7 @@
 
 <script lang="ts" setup>
 import Card from 'primevue/card';
-import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
-defineProps<{ people: PhotoAnalysisResult['pessoas'] }>();
+defineProps<{ location: string }>();
 </script>
 
 <style scoped>
@@ -28,7 +26,7 @@ defineProps<{ people: PhotoAnalysisResult['pessoas'] }>();
     text-align: left;
 }
 
-.people-card-content {
+.location-card-content {
     background: #e3eaf3;
     border-radius: 8px;
     padding: 1rem;
