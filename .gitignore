@@ -36,3 +36,7 @@ coverage
 __screenshots__/
 
 .gitattributes
+
+# Env files
+.env
+.env.*.local

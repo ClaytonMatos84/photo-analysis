@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import FileUpload from 'primevue/fileupload';
-import MainLayout from '../components/MainLayout.vue';
+import MainLayout from '@/components/MainLayout.vue';
+import PhotoAnalysisService from '@/services/PhotoAnalysisService';
+import PhotoAnalysisDashboard from '@/components/PhotoAnalysisDashboard.vue';
+import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
 
 const selectedFile = ref<File | null>(null);
+const analysisResult = ref<PhotoAnalysisResult | null>(null);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function uploadImage(event: any) {
@@ -12,15 +16,13 @@ async function uploadImage(event: any) {
     const file = event.files?.[0] || event.target?.files?.[0] || null;
     selectedFile.value = file;
     if (!selectedFile.value) return;
-    // Exemplo de serviço de upload
-    const formData = new FormData();
-    formData.append('file', selectedFile.value);
-    // Substitua a URL abaixo pelo endpoint real do seu backend
-    await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-    });
-    // Aqui você pode adicionar feedback de sucesso/erro
+    try {
+        const result = await PhotoAnalysisService.sendPhotoBinary(selectedFile.value) as PhotoAnalysisResult;
+        analysisResult.value = result;
+        console.log('Resultado da análise:', result);
+    } catch (error) {
+        console.error('Erro ao enviar imagem:', error);
+    }
 }
 </script>
 
@@ -34,11 +36,12 @@ async function uploadImage(event: any) {
                     <p>Envie uma imagem nos formatos PNG, JPG ou JPEG para análise.</p>
                 </header>
                 <div class="upload-form">
-                    <FileUpload name="file" url="/api/upload" accept="image/png, image/jpeg, image/jpg" :auto="false"
-                        :showUploadButton="true" :showCancelButton="true" :multiple="false"
-                        @upload="uploadImage($event)" chooseLabel="Selecionar" uploadLabel="Enviar"
+                    <FileUpload name="file" url="http://localhost:5678/webhook/analise-foto"
+                        accept="image/png, image/jpeg, image/jpg" :showUploadButton="true" :showCancelButton="true"
+                        :multiple="false" @upload="uploadImage($event)" chooseLabel="Selecionar" uploadLabel="Enviar"
                         cancelLabel="Cancelar" />
                 </div>
+                <PhotoAnalysisDashboard v-if="analysisResult" :result="analysisResult" />
             </main>
         </template>
     </MainLayout>
