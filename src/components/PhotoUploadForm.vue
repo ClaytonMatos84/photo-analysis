@@ -27,7 +27,7 @@ import Message from 'primevue/message';
 import PhotoAnalysisService from '@/services/PhotoAnalysisService';
 import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
 
-const photoAnalysisUrl = import.meta.env.VITE_PHOTO_ANALYSIS_URL;
+const photoAnalysisUrl = import.meta.env.VITE_BASE_SERVER_URL + '/photo-analysis/analyze';
 
 const emit = defineEmits<{ (e: 'analysis', result: PhotoAnalysisResult): void }>();
 const accept = 'image/png, image/jpeg, image/jpg';

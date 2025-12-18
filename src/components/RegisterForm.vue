@@ -1,33 +1,43 @@
 <template>
-    <div class="login-container">
-        <div class="login-box">
-            <div class="login-title">Bem vindo</div>
-            <div class="login-fields">
+    <div class="register-container">
+        <div class="register-box">
+            <div class="register-title">Cadastre-se</div>
+            <div class="register-fields">
                 <IconField class="w-full">
                     <InputIcon class="pi pi-envelope text-white/70" />
                     <InputText v-model="email" type="email" class="w-full" placeholder="Email"
                         :class="{ 'p-invalid': emailError }" />
                 </IconField>
-                <Message v-if="emailError" severity="error" class="login-error-msg" :closable="false">{{
+                <Message v-if="emailError" severity="error" class="register-error-msg" :closable="false">{{
                     emailError }}</Message>
                 <IconField class="w-full">
                     <InputIcon class="pi pi-lock text-white/70" />
                     <InputText v-model="password" type="password" class="w-full" placeholder="Senha"
                         :class="{ 'p-invalid': passwordError }" />
                 </IconField>
-                <Message v-if="passwordError" severity="error" class="login-error-msg" :closable="false">{{
+                <Message v-if="passwordError" severity="error" class="register-error-msg" :closable="false">{{
                     passwordError }}</Message>
+                <IconField class="w-full">
+                    <InputIcon class="pi pi-lock text-white/70" />
+                    <InputText v-model="confirmPassword" type="password" class="w-full" placeholder="Confirmar Senha"
+                        :class="{ 'p-invalid': confirmPasswordError }" />
+                </IconField>
+                <Message v-if="confirmPasswordError" severity="error" class="register-error-msg" :closable="false">{{
+                    confirmPasswordError }}</Message>
             </div>
-            <Button label="Entrar" class="w-full p-button-rounded p-button-primary login-btn" :disabled="isLoading"
-                @click="handleLogin" />
-            <Message v-if="formError" severity="error" class="login-form-error" :closable="false">{{ formError }}
+            <Button label="Cadastrar" class="w-full p-button-rounded p-button-primary register-btn"
+                :disabled="isLoading" @click="handleRegister" />
+            <Message v-if="formError" severity="error" class="register-form-error" :closable="false">{{ formError }}
+            </Message>
+            <Message v-if="successMessage" severity="success" class="register-form-error" :closable="false">{{
+                successMessage }}
             </Message>
             <div class="toggle-mode">
                 <span class="toggle-text">
-                    Não tem uma conta?
+                    Já tem uma conta?
                 </span>
-                <Button label="Cadastre-se" class="p-button-text p-button-sm toggle-btn"
-                    @click="router.push({ name: 'register' })" />
+                <Button label="Fazer Login" class="p-button-text p-button-sm toggle-btn"
+                    @click="router.push({ name: 'login' })" />
             </div>
         </div>
     </div>
@@ -46,9 +56,12 @@ import AuthService from '@/services/AuthService';
 const router = useRouter();
 const email = ref('');
 const password = ref('');
+const confirmPassword = ref('');
 const emailError = ref('');
 const passwordError = ref('');
+const confirmPasswordError = ref('');
 const formError = ref('');
+const successMessage = ref('');
 const isLoading = ref(false);
 
 function validateEmail(email: string): boolean {
@@ -60,6 +73,7 @@ function validateForm() {
     let valid = true;
     emailError.value = '';
     passwordError.value = '';
+    confirmPasswordError.value = '';
     formError.value = '';
 
     if (!email.value) {
@@ -78,20 +92,32 @@ function validateForm() {
         valid = false;
     }
 
+    if (!confirmPassword.value) {
+        confirmPasswordError.value = 'Confirmação de senha é obrigatória.';
+        valid = false;
+    } else if (password.value !== confirmPassword.value) {
+        confirmPasswordError.value = 'As senhas não coincidem.';
+        valid = false;
+    }
+
     return valid;
 }
 
-async function handleLogin() {
+async function handleRegister() {
     if (!validateForm()) return;
     isLoading.value = true;
     formError.value = '';
+    successMessage.value = '';
 
-    const response = await AuthService.login(email.value, password.value);
+    const response = await AuthService.register(email.value, password.value);
 
-    if (response.success) {
-        router.push({ name: 'home' });
+    if (response.userId) {
+        successMessage.value = 'Cadastro realizado com sucesso! Redirecionando para o login...';
+        setTimeout(() => {
+            router.push({ name: 'login' });
+        }, 2000);
     } else {
-        formError.value = response.message || 'Erro ao realizar login.';
+        formError.value = response.message || 'Erro ao realizar cadastro.';
     }
 
     isLoading.value = false;
@@ -99,7 +125,7 @@ async function handleLogin() {
 </script>
 
 <style scoped>
-.login-container {
+.register-container {
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -107,7 +133,7 @@ async function handleLogin() {
     background: linear-gradient(135deg, #232526 0%, #414345 100%);
 }
 
-.login-box {
+.register-box {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 1.5rem;
@@ -123,21 +149,21 @@ async function handleLogin() {
     gap: 2rem;
 }
 
-.login-title {
+.register-title {
     color: #fff;
     font-size: 2rem;
     font-weight: 600;
     text-align: center;
 }
 
-.login-fields {
+.register-fields {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-.login-btn {
+.register-btn {
     margin-top: 0.5rem;
 }
 

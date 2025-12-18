@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const PHOTO_ANALYSIS_URL = import.meta.env.VITE_PHOTO_ANALYSIS_URL
+const PHOTO_ANALYSIS_URL = import.meta.env.VITE_BASE_SERVER_URL + '/photo-analysis/analyze'
 
 export default class PhotoAnalysisService {
     static async sendPhotoBinary(photo: Blob | File): Promise<object> {
