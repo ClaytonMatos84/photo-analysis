@@ -5,7 +5,7 @@ const PHOTO_ANALYSIS_URL = import.meta.env.VITE_PHOTO_ANALYSIS_URL
 export default class PhotoAnalysisService {
     static async sendPhotoBinary(photo: Blob | File): Promise<object> {
         const formData = new FormData()
-        formData.append('data', photo)
+        formData.append('imagem', photo)
         const response = await axios.post(PHOTO_ANALYSIS_URL, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',

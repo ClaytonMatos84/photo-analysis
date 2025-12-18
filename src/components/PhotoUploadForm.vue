@@ -1,8 +1,8 @@
 <template>
     <div class="upload-form">
-        <FileUpload name="file" url="http://localhost:5678/webhook/analise-foto" :accept="accept"
-            :showUploadButton="true" :showCancelButton="true" :multiple="false" @upload="onUpload($event)"
-            chooseLabel="Selecionar" uploadLabel="Enviar" :disabled="isLoading" />
+        <FileUpload name="file" :url="photoAnalysisUrl" :accept="accept" :showUploadButton="true"
+            :showCancelButton="true" :multiple="false" @upload="onUpload($event)" chooseLabel="Selecionar"
+            uploadLabel="Enviar" :disabled="isLoading" />
         <div v-if="isLoading" class="upload-loading">
             <ProgressSpinner strokeWidth="4" style="width:60px;height:60px" />
             <span class="upload-loading-text">Analisando imagem...</span>
@@ -26,6 +26,8 @@ import ProgressSpinner from 'primevue/progressspinner';
 import Message from 'primevue/message';
 import PhotoAnalysisService from '@/services/PhotoAnalysisService';
 import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
+
+const photoAnalysisUrl = import.meta.env.VITE_PHOTO_ANALYSIS_URL;
 
 const emit = defineEmits<{ (e: 'analysis', result: PhotoAnalysisResult): void }>();
 const accept = 'image/png, image/jpeg, image/jpg';
