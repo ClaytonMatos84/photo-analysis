@@ -1,8 +1,8 @@
 <template>
     <div class="upload-form">
-        <FileUpload name="file" :url="photoAnalysisUrl" :accept="accept" :showUploadButton="true"
-            :showCancelButton="true" :multiple="false" @upload="onUpload($event)" chooseLabel="Selecionar"
-            uploadLabel="Enviar" :disabled="isLoading" />
+        <FileUpload ref="fileUploadRef" name="file" :accept="accept" :showUploadButton="true" :showCancelButton="true"
+            :multiple="false" @select="onSelect($event)" @uploader="onUpload($event)" chooseLabel="Selecionar"
+            uploadLabel="Enviar" :disabled="isLoading" :auto="false" :customUpload="true" />
         <div v-if="isLoading" class="upload-loading">
             <ProgressSpinner strokeWidth="4" style="width:60px;height:60px" />
             <span class="upload-loading-text">Analisando imagem...</span>
@@ -27,22 +27,48 @@ import Message from 'primevue/message';
 import PhotoAnalysisService from '@/services/PhotoAnalysisService';
 import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
 
-const photoAnalysisUrl = import.meta.env.VITE_BASE_SERVER_URL + '/photo-analysis/analyze';
-
 const emit = defineEmits<{ (e: 'analysis', result: PhotoAnalysisResult): void }>();
 const accept = 'image/png, image/jpeg, image/jpg';
 const isLoading = ref(false);
 const errorMessage = ref('');
+interface FileUploadRef {
+    files?: File[];
+    uploadedFiles?: File[];
+}
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function onUpload(event: any) {
-    const file = event.files?.[0] || event.target?.files?.[0] || null;
+const fileUploadRef = ref<FileUploadRef | null>(null);
+
+function onSelect(event: { files: File | File[] }) {
+    const fu = fileUploadRef.value;
+    const file = Array.isArray(event.files) ? event.files[0] : event.files || null;
+    if (fu) {
+        fu.files = file ? [file] : [];
+    }
+}
+
+async function onUpload(event: { files: File | File[] }) {
+    const file = Array.isArray(event.files) ? event.files[0] : event.files || null;
     if (!file) return;
     isLoading.value = true;
     errorMessage.value = '';
     try {
         const result = await PhotoAnalysisService.sendPhotoBinary(file) as PhotoAnalysisResult;
         emit('analysis', result);
+
+        const fu = fileUploadRef.value as FileUploadRef | null;
+        if (fu) {
+            const filesArr = fu.files || [];
+            const uploadedArr = fu.uploadedFiles || [];
+            // Usar a mesma referência do File se possível
+            const matchIndex = filesArr.findIndex((f: File) => f === file || (f?.name === file?.name && f?.size === file?.size));
+            const matchedFile = matchIndex !== -1 ? filesArr[matchIndex] : file;
+            if (matchedFile) {
+                fu.uploadedFiles = [...uploadedArr, matchedFile];
+            }
+            if (matchIndex !== -1) {
+                fu.files = [...filesArr.slice(0, matchIndex), ...filesArr.slice(matchIndex + 1)];
+            }
+        }
     } catch (error) {
         errorMessage.value = 'Ocorreu um erro ao enviar a imagem.';
         setTimeout(() => {
