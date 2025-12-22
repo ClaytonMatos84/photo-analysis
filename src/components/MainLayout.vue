@@ -31,16 +31,24 @@ import { useRouter } from 'vue-router';
 import Sidebar from 'primevue/sidebar';
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';
+import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
+const authStore = useAuthStore();
 const sidebarVisible = ref(false);
 const isDesktop = ref(window.innerWidth >= 1024);
 window.addEventListener('resize', () => {
     isDesktop.value = window.innerWidth >= 1024;
 });
+
+function handleLogout() {
+    authStore.clearToken();
+    router.push('/login');
+}
+
 const menuItems = [
     { label: 'Enviar Análise', icon: 'pi pi-upload', command: () => router.push('/') },
-    { label: 'Sair', icon: 'pi pi-sign-out', command: () => router.push('/login') }
+    { label: 'Sair', icon: 'pi pi-sign-out', command: handleLogout }
 ];
 </script>
 

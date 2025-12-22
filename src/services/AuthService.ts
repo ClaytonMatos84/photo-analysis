@@ -19,6 +19,10 @@ export interface AuthResponse {
     message?: string;
 }
 
+export interface LoginResponse {
+    access_token: string;
+}
+
 class AuthService {
     /**
      * Registra um novo usuário no sistema
@@ -53,13 +57,13 @@ class AuthService {
      */
     async login(email: string, password: string): Promise<AuthResponse> {
         try {
-            const response = await axios.post<string>(`${API_BASE_URL}/auth/login`, {
+            const response = await axios.post<LoginResponse>(`${API_BASE_URL}/auth/login`, {
                 username: email,
                 password: password
             });
             return {
                 success: true,
-                token: response.data
+                token: response.data.access_token
             }
         } catch (error: Error | unknown) {
             if (axios.isAxiosError(error) && error.response) {

@@ -35,15 +35,18 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import Button from 'primevue/button';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import Message from 'primevue/message';
 import AuthService from '@/services/AuthService';
+import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
+const route = useRoute();
+const authStore = useAuthStore();
 const email = ref('');
 const password = ref('');
 const emailError = ref('');
@@ -89,7 +92,13 @@ async function handleLogin() {
     const response = await AuthService.login(email.value, password.value);
 
     if (response.success) {
-        router.push({ name: 'home' });
+        authStore.setToken(response.token);
+        const redirect = (route.query.redirect as string) || '';
+        if (redirect) {
+            router.push(redirect);
+        } else {
+            router.push({ name: 'home' });
+        }
     } else {
         formError.value = response.message || 'Erro ao realizar login.';
     }
