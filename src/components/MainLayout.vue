@@ -10,11 +10,11 @@
                 </div>
             </aside>
             <Button v-if="!isDesktop" icon="pi pi-bars" class="sidebar-toggle" @click="sidebarVisible = true" />
-            <Sidebar v-model:visible="sidebarVisible" :style="{ width: '250px' }" v-if="!isDesktop">
+            <Drawer v-model:visible="sidebarVisible" position="left" :style="{ width: '250px' }" v-if="!isDesktop">
                 <div class="sidebar-content">
                     <Menu :model="menuItems" :router="true" />
                 </div>
-            </Sidebar>
+            </Drawer>
             <main class="main-content">
                 <slot />
             </main>
@@ -28,7 +28,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import Sidebar from 'primevue/sidebar';
+import Drawer from 'primevue/drawer';
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';
 import { useAuthStore } from '@/stores/auth';
@@ -65,7 +65,7 @@ const menuItems = [
 .header {
     background: #357ae8;
     color: #fff;
-    padding: 1.2rem 1.75rem;
+    padding: 1.2rem 2rem 1.2rem 2.75rem;
     font-size: 1.6rem;
     text-align: left;
     z-index: 2;
@@ -126,9 +126,9 @@ const menuItems = [
     top: 80px;
     left: 1.2rem;
     z-index: 1001;
-    background: linear-gradient(135deg, #4287f5 0%, #357ae8 100%);
-    color: #fff;
-    border: none;
+    background: linear-gradient(135deg, #4287f5 0%, #357ae8 100%) !important;
+    color: #fff !important;
+    border: none !important;
     border-radius: 50%;
     width: 44px;
     height: 44px;
@@ -137,5 +137,14 @@ const menuItems = [
     justify-content: center;
     cursor: pointer;
     box-shadow: 0 10px 24px rgba(66, 135, 245, 0.35);
+}
+
+:deep(.sidebar-toggle.p-button:hover) {
+    background: linear-gradient(135deg, #4f8df8 0%, #3b82f6 100%) !important;
+    box-shadow: 0 12px 28px rgba(66, 135, 245, 0.45) !important;
+}
+
+:deep(.sidebar-toggle .pi) {
+    color: #fff !important;
 }
 </style>
