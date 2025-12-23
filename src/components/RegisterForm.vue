@@ -14,13 +14,13 @@
                     <IconField class="w-full">
                         <InputIcon class="pi pi-lock text-white/70" />
                         <InputText v-model="password" type="password" class="w-full" placeholder="Senha"
-                            :class="{ 'p-invalid': passwordError }" />
+                            autocomplete="false" :class="{ 'p-invalid': passwordError }" />
                     </IconField>
                     <Message v-if="passwordError" severity="error" class="register-error-msg" :closable="false">{{
                         passwordError }}</Message>
                     <IconField class="w-full">
                         <InputIcon class="pi pi-lock text-white/70" />
-                        <InputText v-model="confirmPassword" type="password" class="w-full"
+                        <InputText v-model="confirmPassword" type="password" class="w-full" autocomplete="false"
                             placeholder="Confirmar Senha" :class="{ 'p-invalid': confirmPasswordError }" />
                     </IconField>
                     <Message v-if="confirmPasswordError" severity="error" class="register-error-msg" :closable="false">

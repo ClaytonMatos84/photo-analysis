@@ -9,7 +9,7 @@ This template should help get you started developing with Vue 3 in Vite.
 ## Recommended Browser Setup
 
 - Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
+  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
   - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
 - Firefox:
   - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
@@ -43,6 +43,21 @@ npm run build
 
 ### Lint with [ESLint](https://eslint.org/)
 
-```sh
+````sh
 npm run lint
+
+### Environment Variables
+
+Create a `.env` file based on `.env.example` and set your backend base URL:
+
+```sh
+cp .env.example .env
+````
+
+Then edit `.env` with your server address:
+
+```sh
+VITE_BASE_SERVER_URL=http://localhost:3000
 ```
+
+The app uses a centralized Axios client reading this value and attaching the JWT from `localStorage` when present.

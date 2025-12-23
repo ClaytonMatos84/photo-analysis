@@ -12,7 +12,7 @@
 
                     <PhotoUploadForm @analysis="handleAnalysis" />
                 </header>
-                <PhotoAnalysisDashboard v-if="analysisResult" :result="analysisResult" />
+                <PhotoAnalysisDashboard v-if="analysisResult" :result="analysisResult" :imageFile="imageFile" />
             </main>
         </template>
     </MainLayout>
@@ -26,9 +26,11 @@ import PhotoAnalysisDashboard from '@/components/PhotoAnalysisDashboard.vue';
 import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
 
 const analysisResult = ref<PhotoAnalysisResult | null>(null);
+const imageFile = ref<File | undefined>(undefined);
 
-function handleAnalysis(result: PhotoAnalysisResult) {
+function handleAnalysis(result: PhotoAnalysisResult, file: File) {
     analysisResult.value = result;
+    imageFile.value = file;
 }
 </script>
 

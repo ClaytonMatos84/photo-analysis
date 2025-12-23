@@ -1,10 +1,11 @@
-import axios from 'axios'
+import api from '@/services/api'
 import { useAuthStore } from '@/stores/auth'
+import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult'
 
-const PHOTO_ANALYSIS_URL = import.meta.env.VITE_BASE_SERVER_URL + '/photo-analysis/analyze'
+const PHOTO_ANALYSIS_URL = '/photo-analysis/analyze'
 
 export default class PhotoAnalysisService {
-    static async sendPhotoBinary(photo: Blob | File): Promise<object> {
+    static async sendPhotoBinary(photo: Blob | File): Promise<PhotoAnalysisResult> {
         const authStore = useAuthStore()
         const formData = new FormData()
         formData.append('imagem', photo)
@@ -17,7 +18,7 @@ export default class PhotoAnalysisService {
             headers['Authorization'] = `Bearer ${authStore.token}`
         }
 
-        const response = await axios.post(PHOTO_ANALYSIS_URL, formData, {
+        const response = await api.post(PHOTO_ANALYSIS_URL, formData, {
             headers,
         })
         return response.data

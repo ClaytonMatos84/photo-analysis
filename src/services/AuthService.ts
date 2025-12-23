@@ -1,6 +1,7 @@
-import axios from 'axios';
+import api from '@/services/api'
+import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_BASE_SERVER_URL;
+// base URL is provided by centralized Axios client
 
 export interface RegisterRequest {
     username: string;
@@ -32,7 +33,7 @@ class AuthService {
      */
     async register(email: string, password: string): Promise<RegisterResponse> {
         try {
-            const response = await axios.post<RegisterResponse>(`${API_BASE_URL}/auth/register`, {
+            const response = await api.post<RegisterResponse>(`/auth/register`, {
                 username: email,
                 password: password
             });
@@ -57,7 +58,7 @@ class AuthService {
      */
     async login(email: string, password: string): Promise<AuthResponse> {
         try {
-            const response = await axios.post<LoginResponse>(`${API_BASE_URL}/auth/login`, {
+            const response = await api.post<LoginResponse>(`/auth/login`, {
                 username: email,
                 password: password
             });

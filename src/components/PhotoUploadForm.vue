@@ -27,7 +27,7 @@ import Message from 'primevue/message';
 import PhotoAnalysisService from '@/services/PhotoAnalysisService';
 import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
 
-const emit = defineEmits<{ (e: 'analysis', result: PhotoAnalysisResult): void }>();
+const emit = defineEmits<{ (e: 'analysis', result: PhotoAnalysisResult, file: File): void }>();
 const accept = 'image/png, image/jpeg, image/jpg';
 const isLoading = ref(false);
 const errorMessage = ref('');
@@ -53,21 +53,13 @@ async function onUpload(event: { files: File | File[] }) {
     errorMessage.value = '';
     try {
         const result = await PhotoAnalysisService.sendPhotoBinary(file) as PhotoAnalysisResult;
-        emit('analysis', result);
+        emit('analysis', result, file);
 
+        // Limpar o arquivo após o sucesso do envio
         const fu = fileUploadRef.value as FileUploadRef | null;
         if (fu) {
-            const filesArr = fu.files || [];
-            const uploadedArr = fu.uploadedFiles || [];
-            // Usar a mesma referência do File se possível
-            const matchIndex = filesArr.findIndex((f: File) => f === file || (f?.name === file?.name && f?.size === file?.size));
-            const matchedFile = matchIndex !== -1 ? filesArr[matchIndex] : file;
-            if (matchedFile) {
-                fu.uploadedFiles = [...uploadedArr, matchedFile];
-            }
-            if (matchIndex !== -1) {
-                fu.files = [...filesArr.slice(0, matchIndex), ...filesArr.slice(matchIndex + 1)];
-            }
+            fu.files = [];
+            fu.uploadedFiles = [];
         }
     } catch (error) {
         errorMessage.value = 'Ocorreu um erro ao enviar a imagem.';

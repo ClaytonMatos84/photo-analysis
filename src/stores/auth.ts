@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import axios from 'axios'
+import api from '@/services/api'
 
 function decodeJwtExp(token: string): number | null {
     const parts = token.split('.')
@@ -39,7 +39,7 @@ export const useAuthStore = defineStore('auth', () => {
         }
         if (stored) {
             token.value = stored
-            axios.defaults.headers.common['Authorization'] = `Bearer ${stored}`
+            api.defaults.headers.common['Authorization'] = `Bearer ${stored}`
         }
     }
 
@@ -54,13 +54,13 @@ export const useAuthStore = defineStore('auth', () => {
 
     function setToken(t: string) {
         token.value = t
-        axios.defaults.headers.common['Authorization'] = `Bearer ${t}`
+        api.defaults.headers.common['Authorization'] = `Bearer ${t}`
         localStorage.setItem(STORAGE_KEY, t)
     }
 
     function clearToken() {
         token.value = null
-        delete axios.defaults.headers.common['Authorization']
+        delete api.defaults.headers.common['Authorization']
         localStorage.removeItem(STORAGE_KEY)
     }
 

@@ -14,7 +14,7 @@
                     <IconField class="w-full">
                         <InputIcon class="pi pi-lock text-white/70" />
                         <InputText v-model="password" type="password" class="w-full" placeholder="Senha"
-                            :class="{ 'p-invalid': passwordError }" />
+                            autocomplete="false" :class="{ 'p-invalid': passwordError }" />
                     </IconField>
                     <Message v-if="passwordError" severity="error" class="login-error-msg" :closable="false">{{
                         passwordError }}</Message>
@@ -311,6 +311,10 @@ async function handleLogin() {
 :deep(.login-btn:disabled) {
     opacity: 0.7 !important;
     cursor: not-allowed !important;
+}
+
+.login-form-error {
+    margin-top: 1rem;
 }
 
 :deep(.login-form-error .p-message-wrapper) {
