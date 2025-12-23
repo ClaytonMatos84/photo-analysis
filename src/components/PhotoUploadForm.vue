@@ -4,7 +4,7 @@
             :multiple="false" @select="onSelect($event)" @uploader="onUpload($event)" chooseLabel="Selecionar"
             uploadLabel="Enviar" :disabled="isLoading" :auto="false" :customUpload="true" />
         <div v-if="isLoading" class="upload-loading">
-            <ProgressSpinner strokeWidth="4" style="width:60px;height:60px" />
+            <ProgressSpinner strokeWidth="4" />
             <span class="upload-loading-text">Analisando imagem...</span>
         </div>
         <Message v-if="errorMessage" severity="error" class="upload-error" :closable="false">
