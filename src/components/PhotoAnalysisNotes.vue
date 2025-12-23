@@ -21,24 +21,39 @@ defineProps<{ notes: string }>();
 <style scoped>
 .notes-card {
     margin-bottom: 1.2rem;
-    background: #f9fafc;
-    border-left: 6px solid var(--primary-color, #1976d2);
+    background: #f9fafb;
+    border-left: 6px solid #4287f5;
+    border-radius: 12px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+    color: #0f172a;
+    border: 1px solid #e5e7eb;
 }
 
 .notes-title {
-    color: var(--primary-color, #1976d2);
+    color: #0f172a;
     font-size: 1.15rem;
-    font-weight: bold;
+    font-weight: 700;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
+.notes-title .pi {
+    color: #4287f5;
+}
+
 .notes-content {
     font-size: 1rem;
-    color: #444;
-    background: #e3eaf3;
-    border-radius: 8px;
+    color: #111827;
+    background: #f5f7fb;
+    border-radius: 10px;
     padding: 1rem;
+    border: 1px solid #e5e7eb;
+}
+
+:deep(.p-card) {
+    background: transparent;
+    border: none;
+    box-shadow: none;
 }
 </style>

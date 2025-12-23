@@ -23,19 +23,20 @@ defineProps<{ objects: PhotoAnalysisResult['objetos_identificados'] }>();
 
 <style scoped>
 .section-title-text {
-    color: var(--primary-color, #1976d2);
-    font-size: 1.2rem;
-    font-weight: bold;
-    letter-spacing: 1px;
+    color: #0f172a;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.2px;
     display: block;
     text-align: left;
 }
 
 .objects-card-content {
-    background: #e3eaf3;
-    border-radius: 8px;
+    background: #f5f7fb;
+    border-radius: 12px;
     padding: 1rem;
     margin-bottom: 1rem;
+    border: 1px solid #e5e7eb;
 }
 
 .objects-list {
@@ -47,13 +48,20 @@ defineProps<{ objects: PhotoAnalysisResult['objetos_identificados'] }>();
 }
 
 .objects-tag {
-    background: var(--accent-color, #64b5f6);
+    background: linear-gradient(135deg, #4f8df8 0%, #357ae8 100%);
     color: #fff;
-    border-radius: 8px;
-    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    padding: 0.45rem 1.1rem;
     font-size: 0.95rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    box-shadow: 0 6px 18px rgba(66, 135, 245, 0.22);
+}
+
+:deep(.p-card) {
+    background: transparent;
+    border: none;
+    box-shadow: none;
 }
 </style>

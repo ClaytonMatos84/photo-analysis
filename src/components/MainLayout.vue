@@ -58,37 +58,42 @@ const menuItems = [
     flex-direction: column;
     min-height: 100vh;
     position: relative;
+    background: #f5f7fb;
+    color: #0f172a;
 }
 
 .header {
-    background: #1976d2;
+    background: #357ae8;
     color: #fff;
-    padding: 1rem;
-    font-size: 1.5rem;
+    padding: 1.2rem 1.75rem;
+    font-size: 1.6rem;
     text-align: left;
     z-index: 2;
-    position: relative;
+    position: sticky;
+    top: 0;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
 }
 
 .layout-body {
     display: flex;
     flex: 1;
     gap: 2rem;
-    padding: 2rem 0 0 0;
+    padding: 2rem 2rem 3rem 2rem;
 }
 
 .main-content {
     flex: 1;
     padding: 2rem;
-    background: #f4f6fa;
+    background: #fff;
+    border: 1px solid #e5e7eb;
     min-height: calc(100vh - 70px - 50px);
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     margin: 0 2rem 2rem 0;
 }
 
 .footer {
-    background: #1976d2;
+    background: #357ae8;
     color: #fff;
     text-align: center;
     padding: 1rem 0;
@@ -98,21 +103,22 @@ const menuItems = [
     bottom: 0;
     width: 100%;
     z-index: 2;
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.12);
 }
 
 .sidebar {
     width: 250px;
     background: #fff;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
-    border-radius: 0 12px 12px 0;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
     margin-right: 2rem;
     padding: 2rem 0;
     min-height: calc(100vh - 70px - 50px);
+    border: 1px solid #e5e7eb;
 }
 
 .sidebar-content {
-    padding: 0 1rem;
+    padding: 0 1.25rem;
 }
 
 .sidebar-toggle {
@@ -120,15 +126,16 @@ const menuItems = [
     top: 80px;
     left: 1.2rem;
     z-index: 1001;
-    background: #1976d2;
+    background: linear-gradient(135deg, #4287f5 0%, #357ae8 100%);
     color: #fff;
     border: none;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    box-shadow: 0 10px 24px rgba(66, 135, 245, 0.35);
 }
 </style>

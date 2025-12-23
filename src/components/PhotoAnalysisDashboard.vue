@@ -31,11 +31,13 @@ defineProps<{ result: PhotoAnalysisResult }>();
 <style scoped>
 .dashboard-card {
     background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     padding: 2rem;
     margin-top: 2rem;
     margin-bottom: 2rem;
+    border: 1px solid #e5e7eb;
+    color: #0f172a;
 }
 
 .dashboard-row {

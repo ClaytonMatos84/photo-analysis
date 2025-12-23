@@ -37,37 +37,46 @@ function handleAnalysis(result: PhotoAnalysisResult) {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 1.5rem;
+    color: #0f172a;
 }
 
 .prime-header {
     width: 100%;
     background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
-    padding: 1.5rem 2rem;
-    margin-bottom: 2rem;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 2rem 2.5rem;
+    margin-bottom: 1.5rem;
     text-align: center;
+    border: 1px solid #e5e7eb;
 }
 
 .prime-header-title {
-    color: var(--primary-color, #1976d2);
-    font-size: 1.3rem;
-    font-weight: bold;
+    color: #1f2937;
+    font-size: 1.6rem;
+    font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
     justify-content: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.3px;
+}
+
+.prime-header-title .pi {
+    color: #4287f5;
+    font-size: 1.4rem;
 }
 
 .prime-header-desc {
     font-size: 1.05rem;
-    color: #333;
-    background: var(--background-color, #f4f6fa);
-    border-radius: 8px;
-    padding: 1rem;
-    margin: 0 auto;
-    margin-bottom: 1.5rem;
+    color: #374151;
+    background: #f5f7fb;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin: 0 auto 1.25rem auto;
     display: inline-block;
+    border: 1px solid #e5e7eb;
 }
 </style>

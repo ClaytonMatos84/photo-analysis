@@ -21,28 +21,37 @@ defineProps<{ sentiment: string }>();
 
 .sentiment-message {
     width: 100%;
-    border-radius: 16px;
-    font-size: 1.1rem;
-    padding: 1.5rem 2rem;
-    box-shadow: 0 2px 12px rgba(25, 118, 210, 0.08);
-    background: linear-gradient(90deg, #e3eaf3 0%, #f4f6fa 100%);
+    border-radius: 12px;
+    font-size: 1.05rem;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    background: #e9f2ff;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
+}
+
+:deep(.p-message) {
+    background: transparent;
+    border: none;
+    padding: 0;
+    width: 100%;
 }
 
 .sentiment-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--primary-color, #1976d2);
-    margin-bottom: 0.5rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1d4ed8;
+    margin-bottom: 0.35rem;
     display: block;
-    margin-left: 1.0rem;
+    margin-left: 0.5rem;
 }
 
 .sentiment-text {
-    font-size: 1.1rem;
-    color: #333;
-    margin-left: 1.0rem;
+    font-size: 1.02rem;
+    color: #0f172a;
+    margin-left: 0.5rem;
 }
 </style>

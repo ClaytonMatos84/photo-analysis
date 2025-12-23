@@ -25,22 +25,29 @@ defineProps<{ title: string; description?: string }>();
     margin-bottom: 1.5rem;
 }
 
+:deep(.p-card) {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
 .section-title-text {
-    color: var(--primary-color, #1976d2);
-    font-size: 1.5rem;
-    font-weight: bold;
-    letter-spacing: 1px;
+    color: #0f172a;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.2px;
     display: block;
     text-align: left;
 }
 
 .section-title-desc {
-    font-size: 1.1rem;
-    color: #333;
+    font-size: 1.05rem;
+    color: #374151;
     margin-top: 0.5rem;
     margin-bottom: 1.5rem;
-    background: var(--background-color, #f4f6fa);
-    border-radius: 8px;
-    padding: 1rem;
+    background: #f5f7fb;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    border: 1px solid #e5e7eb;
 }
 </style>

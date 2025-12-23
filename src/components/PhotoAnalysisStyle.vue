@@ -18,18 +18,26 @@ defineProps<{ photoStyle: string }>();
 
 <style scoped>
 .section-title-text {
-    color: var(--primary-color, #1976d2);
-    font-size: 1.2rem;
-    font-weight: bold;
-    letter-spacing: 1px;
+    color: #0f172a;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.2px;
     display: block;
     text-align: left;
 }
 
 .style-card-content {
-    background: #e3eaf3;
-    border-radius: 8px;
+    background: #f5f7fb;
+    border-radius: 12px;
     padding: 1rem;
     margin-bottom: 1rem;
+    border: 1px solid #e5e7eb;
+    color: #0f172a;
+}
+
+:deep(.p-card) {
+    background: transparent;
+    border: none;
+    box-shadow: none;
 }
 </style>

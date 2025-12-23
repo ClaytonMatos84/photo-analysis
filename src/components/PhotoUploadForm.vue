@@ -88,10 +88,14 @@ async function onUpload(event: { files: File | File[] }) {
     flex-direction: column;
     gap: 1.5rem;
     align-items: center;
-    background-color: #f0f0f0;
+    background: #fff;
     margin-bottom: 10px;
-    padding: 1rem 0;
+    padding: 1.25rem 1rem;
     position: relative;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    color: #0f172a;
 }
 
 .upload-loading {
@@ -103,17 +107,18 @@ async function onUpload(event: { files: File | File[] }) {
     flex-direction: column;
     align-items: center;
     z-index: 10;
-    background: rgba(255, 255, 255, 0.85);
-    border-radius: 12px;
+    background: #fff;
+    border-radius: 14px;
     padding: 2rem;
-    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+    border: 1px solid #e5e7eb;
 }
 
 .upload-loading-text {
     margin-top: 1rem;
-    color: var(--primary-color, #1976d2);
-    font-weight: 500;
-    font-size: 1.1rem;
+    color: #0f172a;
+    font-weight: 600;
+    font-size: 1.05rem;
 }
 
 .upload-error {
@@ -131,7 +136,7 @@ async function onUpload(event: { files: File | File[] }) {
 }
 
 .upload-error-icon {
-    color: #d32f2f;
+    color: #ef4444;
     font-size: 2rem;
     margin-top: 0.2rem;
 }
@@ -139,7 +144,55 @@ async function onUpload(event: { files: File | File[] }) {
 .upload-error-retry {
     display: block;
     margin-top: 0.5rem;
-    color: #d32f2f;
+    color: #fca5a5;
     font-size: 0.95rem;
+}
+
+:deep(.p-fileupload) {
+    width: 100%;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: #0f172a;
+}
+
+:deep(.p-fileupload-buttonbar) {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+:deep(.p-fileupload-content) {
+    background: #fff;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+    color: #475569;
+}
+
+:deep(.p-button) {
+    background: linear-gradient(135deg, #4287f5 0%, #357ae8 100%);
+    border: none;
+    border-radius: 0.75rem;
+    padding: 0.65rem 1.25rem;
+    font-weight: 600;
+    box-shadow: 0 6px 18px rgba(66, 135, 245, 0.25);
+}
+
+:deep(.p-button:hover:not(.p-disabled)) {
+    background: linear-gradient(135deg, #4f8df8 0%, #3b82f6 100%);
+    box-shadow: 0 8px 22px rgba(66, 135, 245, 0.3);
+}
+
+:deep(.p-button:focus-visible) {
+    outline: 2px solid #93c5fd;
+    outline-offset: 2px;
+}
+
+:deep(.p-button.p-button-outlined) {
+    background: transparent;
+    border: 1px solid #4287f5;
+    color: #1d4ed8;
+    box-shadow: none;
 }
 </style>
