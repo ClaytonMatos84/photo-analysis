@@ -10,8 +10,9 @@
                         Envie uma imagem nos formatos <strong>PNG, JPG ou JPEG</strong> para análise.
                     </p>
 
-                    <PhotoUploadForm @analysis="handleAnalysis" />
+                    <PhotoUploadForm @file="handleFile" @analysis="handleAnalysis" />
                 </header>
+                <PhotoDisplay v-if="imageFile" :imageFile="imageFile" />
                 <PhotoAnalysisDashboard v-if="analysisResult" :result="analysisResult" :imageFile="imageFile" />
             </main>
         </template>
@@ -23,14 +24,18 @@ import { ref } from 'vue';
 import MainLayout from '@/components/MainLayout.vue';
 import PhotoUploadForm from '@/components/PhotoUploadForm.vue';
 import PhotoAnalysisDashboard from '@/components/PhotoAnalysisDashboard.vue';
+import PhotoDisplay from '@/components/PhotoDisplay.vue';
 import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
 
 const analysisResult = ref<PhotoAnalysisResult | null>(null);
 const imageFile = ref<File | undefined>(undefined);
 
-function handleAnalysis(result: PhotoAnalysisResult, file: File) {
-    analysisResult.value = result;
+function handleFile(file: File) {
     imageFile.value = file;
+}
+
+function handleAnalysis(result: PhotoAnalysisResult) {
+    analysisResult.value = result;
 }
 </script>
 

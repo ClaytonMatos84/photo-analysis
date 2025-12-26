@@ -1,7 +1,7 @@
 <template>
     <div class="main-layout">
         <header class="header">
-            <h1>Análise de fotos</h1>
+            <h1>Análise de imagem</h1>
         </header>
         <div class="layout-body">
             <aside class="sidebar" :class="{ 'sidebar-mobile': !isDesktop }" v-if="isDesktop">
@@ -20,7 +20,7 @@
             </main>
         </div>
         <footer class="footer">
-            <span>© 2025 Análise de fotos | Desenvolvido com PrimeVue</span>
+            <span>© 2025 Análise de imagens | Desenvolvido com PrimeVue</span>
         </footer>
     </div>
 </template>

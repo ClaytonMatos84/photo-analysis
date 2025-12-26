@@ -27,7 +27,7 @@ import Message from 'primevue/message';
 import PhotoAnalysisService from '@/services/PhotoAnalysisService';
 import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
 
-const emit = defineEmits<{ (e: 'analysis', result: PhotoAnalysisResult, file: File): void }>();
+const emit = defineEmits<{ (e: 'analysis', result: PhotoAnalysisResult): void; (e: 'file', file: File): void }>();
 const accept = 'image/png, image/jpeg, image/jpg';
 const isLoading = ref(false);
 const errorMessage = ref('');
@@ -41,6 +41,7 @@ const fileUploadRef = ref<FileUploadRef | null>(null);
 function onSelect(event: { files: File | File[] }) {
     const fu = fileUploadRef.value;
     const file = Array.isArray(event.files) ? event.files[0] : event.files || null;
+    emit('file', file as File);
     if (fu) {
         fu.files = file ? [file] : [];
     }
@@ -53,7 +54,7 @@ async function onUpload(event: { files: File | File[] }) {
     errorMessage.value = '';
     try {
         const result = await PhotoAnalysisService.sendPhotoBinary(file) as PhotoAnalysisResult;
-        emit('analysis', result, file);
+        emit('analysis', result);
 
         // Limpar o arquivo após o sucesso do envio
         const fu = fileUploadRef.value as FileUploadRef | null;

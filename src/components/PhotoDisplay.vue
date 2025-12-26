@@ -1,8 +1,8 @@
 <template>
-    <div class="photo-display">
-        <h3 class="photo-title">Foto Analisada</h3>
+    <div v-if="imageUrl" class="photo-display">
+        <h3 class="photo-title">Imagem</h3>
         <div class="photo-container">
-            <img :src="imageUrl" alt="Foto analisada" class="photo-image" />
+            <img :src="imageUrl" alt="Imagem" class="photo-image" />
         </div>
     </div>
 </template>
@@ -21,6 +21,7 @@ watch(() => props.imageFile, (file) => {
         return;
     }
 
+    imageUrl.value = '';
     const reader = new FileReader();
     reader.onload = (e) => {
         imageUrl.value = e.target?.result as string;

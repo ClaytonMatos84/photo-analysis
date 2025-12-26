@@ -1,6 +1,5 @@
 <template>
     <div class="dashboard-card">
-        <PhotoDisplay v-if="imageFile" :imageFile="imageFile" />
         <SectionTitle :title="'Descrição da Cena'" :description="result.descricao_cena" />
 
         <PhotoAnalysisObjects :objects="result.objetos_identificados" />
@@ -25,7 +24,6 @@ import PhotoAnalysisLocation from '@/components/PhotoAnalysisLocation.vue';
 import PhotoAnalysisStyle from '@/components/PhotoAnalysisStyle.vue';
 import PhotoAnalysisSentiment from '@/components/PhotoAnalysisSentiment.vue';
 import PhotoAnalysisNotes from '@/components/PhotoAnalysisNotes.vue';
-import PhotoDisplay from '@/components/PhotoDisplay.vue';
 
 defineProps<{ result: PhotoAnalysisResult; imageFile?: File }>();
 </script>
