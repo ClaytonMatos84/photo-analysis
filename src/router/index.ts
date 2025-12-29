@@ -24,37 +24,49 @@ const router = createRouter({
             path: '/login',
             name: 'login',
             component: LoginView,
+            meta: { requiresAuth: false },
         },
         {
             path: '/register',
             name: 'register',
             component: RegisterView,
+            meta: { requiresAuth: false },
+        },
+        // Fallback para rotas não encontradas
+        {
+            path: '/:pathMatch(.*)*',
+            redirect: '/',
         },
     ],
 })
 
-router.beforeEach((to, _from, next) => {
-    // Rotas públicas: login e register
-    const publicNames = new Set(['login', 'register'])
-
-    if (publicNames.has(String(to.name))) {
-        return next()
-    }
-
-    // Se a rota exige auth (ou se vamos proteger todas exceto públicas)
-    const requiresAuth = to.meta?.requiresAuth !== false
-
-    if (!requiresAuth) {
-        return next()
-    }
-
+router.beforeEach((to, from, next) => {
     const auth = useAuthStore()
-    if (auth.isTokenValid) {
+    const isPublicRoute = to.meta?.requiresAuth === false
+    const isAuthValid = auth.isTokenValid
+
+    // Se a rota é pública, permite acesso
+    if (isPublicRoute) {
+        // Se já está autenticado e tenta ir para login/register, redireciona para home
+        if (isAuthValid && (to.name === 'login' || to.name === 'register')) {
+            return next({ name: 'home' })
+        }
         return next()
     }
 
-    auth.clearToken()
-    return next({ name: 'login', query: { redirect: to.fullPath } })
+    // Se a rota exige autenticação
+    if (!isAuthValid) {
+        // Limpa token inválido
+        auth.clearToken()
+        // Redireciona para login com a rota original como query param
+        return next({
+            name: 'login',
+            query: { redirect: to.fullPath },
+        })
+    }
+
+    // Token é válido, permite acesso
+    return next()
 })
 
 export default router

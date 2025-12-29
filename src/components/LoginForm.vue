@@ -6,21 +6,21 @@
                 <div class="login-fields">
                     <IconField class="w-full">
                         <InputIcon class="pi pi-envelope text-white/70" />
-                        <InputText v-model="email" type="email" class="w-full" placeholder="Email"
-                            :class="{ 'p-invalid': emailError }" />
+                        <InputText v-model="email.value" type="email" class="w-full" placeholder="Email"
+                            :class="{ 'p-invalid': !!email.error }" />
                     </IconField>
-                    <Message v-if="emailError" severity="error" class="login-error-msg" :closable="false">{{
-                        emailError }}</Message>
+                    <Message v-if="email.error" severity="error" class="login-error-msg" :closable="false">{{
+                        email.error }}</Message>
                     <IconField class="w-full">
                         <InputIcon class="pi pi-lock text-white/70" />
-                        <InputText v-model="password" type="password" class="w-full" placeholder="Senha"
-                            autocomplete="false" :class="{ 'p-invalid': passwordError }" />
+                        <InputText v-model="password.value" type="password" class="w-full" placeholder="Senha"
+                            autocomplete="false" :class="{ 'p-invalid': !!password.error }" />
                     </IconField>
-                    <Message v-if="passwordError" severity="error" class="login-error-msg" :closable="false">{{
-                        passwordError }}</Message>
+                    <Message v-if="password.error" severity="error" class="login-error-msg" :closable="false">{{
+                        password.error }}</Message>
                 </div>
                 <Button label="Entrar" type="submit" class="w-full p-button-rounded p-button-primary login-btn"
-                    :disabled="isLoading" />
+                    :disabled="isLoading" :loading="isLoading" />
                 <Message v-if="formError" severity="error" class="login-form-error" :closable="false">{{ formError }}
                 </Message>
             </form>
@@ -45,67 +45,53 @@ import InputText from 'primevue/inputtext';
 import Message from 'primevue/message';
 import AuthService from '@/services/AuthService';
 import { useAuthStore } from '@/stores/auth';
+import { useToast } from '@/composables/useToast';
+import { useFormValidator } from '@/composables/useFormValidator';
 
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
-const email = ref('');
-const password = ref('');
-const emailError = ref('');
-const passwordError = ref('');
-const formError = ref('');
+const { showSuccess, showError } = useToast();
+const { createField, validateForm, validators } = useFormValidator();
+
+const email = createField([validators.required, validators.email]);
+const password = createField([validators.required, validators.minLength(6)]);
 const isLoading = ref(false);
-
-function validateEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-function validateForm() {
-    let valid = true;
-    emailError.value = '';
-    passwordError.value = '';
-    formError.value = '';
-
-    if (!email.value) {
-        emailError.value = 'Email é obrigatório.';
-        valid = false;
-    } else if (!validateEmail(email.value)) {
-        emailError.value = 'Email inválido.';
-        valid = false;
-    }
-
-    if (!password.value) {
-        passwordError.value = 'Senha é obrigatória.';
-        valid = false;
-    } else if (password.value.length < 6) {
-        passwordError.value = 'A senha deve ter no mínimo 6 caracteres.';
-        valid = false;
-    }
-
-    return valid;
-}
+const formError = ref('');
 
 async function handleLogin() {
-    if (!validateForm()) return;
+    if (!validateForm({ email, password })) return;
+
     isLoading.value = true;
     formError.value = '';
 
-    const response = await AuthService.login(email.value, password.value);
+    try {
+        const response = await AuthService.login(email.value.value, password.value.value);
 
-    if (response.success) {
-        authStore.setToken(response.token);
-        const redirect = (route.query.redirect as string) || '';
-        if (redirect) {
-            router.push(redirect);
+        if (response.success) {
+            authStore.setToken(response.token);
+            showSuccess('Login realizado com sucesso!');
+
+            // Aguarda a toast desaparecer antes de redirecionar
+            setTimeout(() => {
+                const redirect = (route.query.redirect as string) || '';
+                if (redirect) {
+                    router.push(redirect);
+                } else {
+                    router.push({ name: 'home' });
+                }
+            }, 800);
         } else {
-            router.push({ name: 'home' });
+            formError.value = response.message || 'Erro ao realizar login.';
+            showError('Erro no login', formError.value);
         }
-    } else {
-        formError.value = response.message || 'Erro ao realizar login.';
+    } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : 'Erro desconhecido';
+        formError.value = errorMsg;
+        showError('Erro ao conectar', errorMsg);
+    } finally {
+        isLoading.value = false;
     }
-
-    isLoading.value = false;
 }
 </script>
 

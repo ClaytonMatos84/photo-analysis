@@ -26,11 +26,18 @@ import ProgressSpinner from 'primevue/progressspinner';
 import Message from 'primevue/message';
 import PhotoAnalysisService from '@/services/PhotoAnalysisService';
 import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
+import { useToast } from '@/composables/useToast';
+import { useErrorHandler } from '@/composables/useErrorHandler';
 
 const emit = defineEmits<{ (e: 'analysis', result: PhotoAnalysisResult): void; (e: 'file', file: File): void }>();
+const { showError, showSuccess } = useToast();
+const { handleError } = useErrorHandler();
+
 const accept = 'image/png, image/jpeg, image/jpg';
 const isLoading = ref(false);
 const errorMessage = ref('');
+const uploadProgress = ref(0);
+
 interface FileUploadRef {
     files?: File[];
     uploadedFiles?: File[];
@@ -41,20 +48,56 @@ const fileUploadRef = ref<FileUploadRef | null>(null);
 function onSelect(event: { files: File | File[] }) {
     const fu = fileUploadRef.value;
     const file = Array.isArray(event.files) ? event.files[0] : event.files || null;
-    emit('file', file as File);
-    if (fu) {
-        fu.files = file ? [file] : [];
+
+    if (file) {
+        emit('file', file);
+        if (fu) {
+            fu.files = [file];
+        }
     }
 }
 
 async function onUpload(event: { files: File | File[] }) {
     const file = Array.isArray(event.files) ? event.files[0] : event.files || null;
     if (!file) return;
+
+    // Valida o tipo de arquivo
+    const validTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    if (!validTypes.includes(file.type)) {
+        const msg = 'Por favor, selecione um arquivo PNG ou JPEG válido.';
+        showError('Tipo de arquivo inválido', msg);
+        errorMessage.value = msg;
+        return;
+    }
+
+    // Valida o tamanho (máximo 10MB)
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (file.size > maxSize) {
+        const msg = 'O arquivo não pode ser maior que 10MB.';
+        showError('Arquivo muito grande', msg);
+        errorMessage.value = msg;
+        return;
+    }
+
     isLoading.value = true;
     errorMessage.value = '';
+    uploadProgress.value = 0;
+
     try {
+        // Simula progresso enquanto faz upload
+        const progressInterval = setInterval(() => {
+            if (uploadProgress.value < 90) {
+                uploadProgress.value += Math.random() * 30;
+            }
+        }, 200);
+
         const result = await PhotoAnalysisService.sendPhotoBinary(file) as PhotoAnalysisResult;
+
+        clearInterval(progressInterval);
+        uploadProgress.value = 100;
+
         emit('analysis', result);
+        showSuccess('Análise completa!', 'Imagem analisada com sucesso');
 
         // Limpar o arquivo após o sucesso do envio
         const fu = fileUploadRef.value as FileUploadRef | null;
@@ -64,12 +107,11 @@ async function onUpload(event: { files: File | File[] }) {
         }
     } catch (error) {
         errorMessage.value = 'Ocorreu um erro ao enviar a imagem.';
-        setTimeout(() => {
-            errorMessage.value = '';
-        }, 4000);
+        handleError(error, 'Erro ao analisar imagem');
         console.error('Erro ao enviar imagem:', error);
     } finally {
         isLoading.value = false;
+        uploadProgress.value = 0;
     }
 }
 </script>

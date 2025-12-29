@@ -6,29 +6,30 @@
                 <div class="register-fields">
                     <IconField class="w-full">
                         <InputIcon class="pi pi-envelope text-white/70" />
-                        <InputText v-model="email" type="email" class="w-full" placeholder="Email"
-                            :class="{ 'p-invalid': emailError }" />
+                        <InputText v-model="email.value" type="email" class="w-full" placeholder="Email"
+                            :class="{ 'p-invalid': !!email.error }" />
                     </IconField>
-                    <Message v-if="emailError" severity="error" class="register-error-msg" :closable="false">{{
-                        emailError }}</Message>
+                    <Message v-if="email.error" severity="error" class="register-error-msg" :closable="false">{{
+                        email.error }}</Message>
                     <IconField class="w-full">
                         <InputIcon class="pi pi-lock text-white/70" />
-                        <InputText v-model="password" type="password" class="w-full" placeholder="Senha"
-                            autocomplete="false" :class="{ 'p-invalid': passwordError }" />
+                        <InputText v-model="password.value" type="password" class="w-full" placeholder="Senha"
+                            autocomplete="false" :class="{ 'p-invalid': !!password.error }" />
                     </IconField>
-                    <Message v-if="passwordError" severity="error" class="register-error-msg" :closable="false">{{
-                        passwordError }}</Message>
-                    <IconField class="w-full">
-                        <InputIcon class="pi pi-lock text-white/70" />
-                        <InputText v-model="confirmPassword" type="password" class="w-full" autocomplete="false"
-                            placeholder="Confirmar Senha" :class="{ 'p-invalid': confirmPasswordError }" />
-                    </IconField>
-                    <Message v-if="confirmPasswordError" severity="error" class="register-error-msg" :closable="false">
+                    <Message v-if="password.error" severity="error" class="register-error-msg" :closable="false">
                         {{
-                            confirmPasswordError }}</Message>
+                            password.error }}</Message>
+                    <IconField class="w-full">
+                        <InputIcon class="pi pi-lock text-white/70" />
+                        <InputText v-model="confirmPassword.value" type="password" class="w-full" autocomplete="false"
+                            placeholder="Confirmar Senha" :class="{ 'p-invalid': !!confirmPassword.error }" />
+                    </IconField>
+                    <Message v-if="confirmPassword.error" severity="error" class="register-error-msg" :closable="false">
+                        {{
+                            confirmPassword.error }}</Message>
                 </div>
                 <Button label="Cadastrar" type="submit" class="w-full p-button-rounded p-button-primary register-btn"
-                    :disabled="isLoading" />
+                    :disabled="isLoading" :loading="isLoading" />
                 <Message v-if="formError" severity="error" class="register-form-error" :closable="false">{{ formError }}
                 </Message>
                 <Message v-if="successMessage" severity="success" class="register-form-error" :closable="false">{{
@@ -55,75 +56,65 @@ import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
 import Message from 'primevue/message';
 import AuthService from '@/services/AuthService';
+import { useToast } from '@/composables/useToast';
+import { useFormValidator } from '@/composables/useFormValidator';
 
 const router = useRouter();
-const email = ref('');
-const password = ref('');
-const confirmPassword = ref('');
-const emailError = ref('');
-const passwordError = ref('');
-const confirmPasswordError = ref('');
+const { showSuccess, showError } = useToast();
+const { createField, validateForm, validators } = useFormValidator();
+
+const email = createField([validators.required, validators.email]);
+const password = createField([validators.required, validators.minLength(8)]);
+const confirmPassword = createField([validators.required]);
 const formError = ref('');
 const successMessage = ref('');
 const isLoading = ref(false);
 
-function validateEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-function validateForm() {
-    let valid = true;
-    emailError.value = '';
-    passwordError.value = '';
-    confirmPasswordError.value = '';
-    formError.value = '';
-
-    if (!email.value) {
-        emailError.value = 'Email é obrigatório.';
-        valid = false;
-    } else if (!validateEmail(email.value)) {
-        emailError.value = 'Email inválido.';
-        valid = false;
+function validatePasswords() {
+    if (password.value !== confirmPassword.value) {
+        confirmPassword.value.error = 'As senhas não coincidem';
+        return false;
     }
-
-    if (!password.value) {
-        passwordError.value = 'Senha é obrigatória.';
-        valid = false;
-    } else if (password.value.length < 6) {
-        passwordError.value = 'A senha deve ter no mínimo 6 caracteres.';
-        valid = false;
-    }
-
-    if (!confirmPassword.value) {
-        confirmPasswordError.value = 'Confirmação de senha é obrigatória.';
-        valid = false;
-    } else if (password.value !== confirmPassword.value) {
-        confirmPasswordError.value = 'As senhas não coincidem.';
-        valid = false;
-    }
-
-    return valid;
+    return true;
 }
 
 async function handleRegister() {
-    if (!validateForm()) return;
-    isLoading.value = true;
     formError.value = '';
     successMessage.value = '';
 
-    const response = await AuthService.register(email.value, password.value);
-
-    if (response.userId) {
-        successMessage.value = 'Cadastro realizado com sucesso! Redirecionando para o login...';
-        setTimeout(() => {
-            router.push({ name: 'login' });
-        }, 2000);
-    } else {
-        formError.value = response.message || 'Erro ao realizar cadastro.';
+    // Valida todos os campos
+    if (!validateForm({ email, password, confirmPassword })) {
+        return;
     }
 
-    isLoading.value = false;
+    // Valida se as senhas coincidem
+    if (!validatePasswords()) {
+        return;
+    }
+
+    isLoading.value = true;
+
+    try {
+        const response = await AuthService.register(email.value.value, password.value.value);
+
+        if (response.success && response.userId) {
+            successMessage.value = 'Cadastro realizado com sucesso! Redirecionando...';
+            showSuccess('Cadastro realizado!', 'Faça login com suas credenciais');
+
+            setTimeout(() => {
+                router.push({ name: 'login' });
+            }, 2000);
+        } else {
+            formError.value = response.message || 'Erro ao realizar cadastro.';
+            showError('Erro no cadastro', formError.value);
+        }
+    } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : 'Erro desconhecido';
+        formError.value = errorMsg;
+        showError('Erro ao conectar', errorMsg);
+    } finally {
+        isLoading.value = false;
+    }
 }
 </script>
 

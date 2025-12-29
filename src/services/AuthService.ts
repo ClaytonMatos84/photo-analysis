@@ -12,6 +12,7 @@ export interface RegisterResponse {
     userId?: number;
     username?: string;
     message?: string;
+    success?: boolean;
 }
 
 export interface AuthResponse {
@@ -37,15 +38,22 @@ class AuthService {
                 username: email,
                 password: password
             });
-            return response.data;
+
+            return {
+                ...response.data,
+                success: true
+            };
         } catch (error: Error | unknown) {
             if (axios.isAxiosError(error) && error.response) {
+                const errorMsg = error.response.data?.message || error.response.data?.error || 'Erro ao registrar usuário'
                 return {
-                    message: error.response.data?.message || 'Erro ao registrar usuário'
+                    message: errorMsg,
+                    success: false
                 };
             }
             return {
-                message: 'Erro de conexão com o servidor'
+                message: 'Erro de conexão com o servidor',
+                success: false
             };
         }
     }
@@ -62,16 +70,18 @@ class AuthService {
                 username: email,
                 password: password
             });
+
             return {
                 success: true,
                 token: response.data.access_token
             }
         } catch (error: Error | unknown) {
             if (axios.isAxiosError(error) && error.response) {
+                const errorMsg = error.response.data?.error || error.response.data?.message || 'Usuário ou senha inválidos'
                 return {
                     token: '',
                     success: false,
-                    message: error.response.data?.error || 'Usuário ou senha inválidos'
+                    message: errorMsg
                 };
             }
             return {
