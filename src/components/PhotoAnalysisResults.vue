@@ -10,7 +10,7 @@
         </header>
 
         <DataTable :value="items" :loading="loading" :paginator="true" :rows="limit" :totalRecords="total" :lazy="true"
-            :first="first" @page="onPage" class="results-table">
+            :first="first" @page="onPage" class="results-table" :rowsPerPageOptions="[5, 10, 20, 50]">
             <Column field="description" header="Descrição" :sortable="false" />
             <Column field="location" header="Local/ambiente" :sortable="false" />
             <Column field="style" header="Estilo" :sortable="false" />
