@@ -17,6 +17,7 @@ function decodeJwtExp(token: string): number | null {
 export const useAuthStore = defineStore('auth', () => {
     const STORAGE_KEY = 'auth_token'
     const token = ref<string | null>(null)
+    const userEmail = ref<string | null>(null)
 
     /**
      * Verifica se um token JWT está expirado
@@ -62,7 +63,20 @@ export const useAuthStore = defineStore('auth', () => {
         token.value = null
         delete api.defaults.headers.common['Authorization']
         localStorage.removeItem(STORAGE_KEY)
+        userEmail.value = null
+    }
+    async function loadProfile() {
+        if (!token.value) return
+        try {
+            const { default: AuthService } = await import('@/services/AuthService')
+            const res = await AuthService.profile()
+            if ('username' in res) {
+                userEmail.value = res.username || null
+            }
+        } catch {
+            // Silently ignore profile loading errors
+        }
     }
 
-    return { token, isAuthenticated, isTokenValid, setToken, clearToken, initializeFromStorage }
+    return { token, userEmail, isAuthenticated, isTokenValid, setToken, clearToken, initializeFromStorage, loadProfile }
 })

@@ -81,6 +81,20 @@ class AuthService {
             };
         }
     }
+
+    async profile(): Promise<{ username: string } | { message: string }> {
+        try {
+            const response = await api.post<{ username: string }>(`/auth/profile`)
+            return response.data
+        } catch (error: Error | unknown) {
+            if (axios.isAxiosError(error) && error.response) {
+                return {
+                    message: error.response.data?.message || 'Erro ao buscar perfil do usuário'
+                }
+            }
+            return { message: 'Erro de conexão com o servidor' }
+        }
+    }
 }
 
 export default new AuthService();

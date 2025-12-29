@@ -2,6 +2,9 @@
     <div class="main-layout">
         <header class="header">
             <h1>Análise de imagem</h1>
+            <div class="header-user" v-if="authStore.userEmail">
+                <Chip v-if="userDisplayName" icon="pi pi-user" :label="userDisplayName" />
+            </div>
         </header>
         <div class="layout-body">
             <aside class="sidebar" :class="{ 'sidebar-mobile': !isDesktop }" v-if="isDesktop">
@@ -26,11 +29,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import Drawer from 'primevue/drawer';
 import Menu from 'primevue/menu';
 import Button from 'primevue/button';
+import Chip from 'primevue/chip';
 import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
@@ -39,6 +43,15 @@ const sidebarVisible = ref(false);
 const isDesktop = ref(window.innerWidth >= 1024);
 window.addEventListener('resize', () => {
     isDesktop.value = window.innerWidth >= 1024;
+});
+
+const userDisplayName = computed(() => {
+    if (!authStore.userEmail) return '';
+    return authStore.userEmail.split('@')[0];
+});
+
+onMounted(() => {
+    authStore.loadProfile();
 });
 
 function handleLogout() {
@@ -67,11 +80,34 @@ const menuItems = [
     color: #fff;
     padding: 1.2rem 2rem 1.2rem 2.75rem;
     font-size: 1.6rem;
-    text-align: left;
     z-index: 2;
     position: sticky;
     top: 0;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.header-user {
+    display: flex;
+    align-items: center;
+}
+
+:deep(.p-chip) {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+:deep(.p-chip .p-chip-icon) {
+    color: #fff;
+    margin: 0 0 -0.3rem;
 }
 
 .layout-body {
