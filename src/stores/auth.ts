@@ -18,6 +18,7 @@ export const useAuthStore = defineStore('auth', () => {
     const STORAGE_KEY = 'auth_token'
     const token = ref<string | null>(null)
     const userEmail = ref<string | null>(null)
+    const profileLoaded = ref(false)
 
     /**
      * Verifica se um token JWT está expirado
@@ -64,14 +65,18 @@ export const useAuthStore = defineStore('auth', () => {
         delete api.defaults.headers.common['Authorization']
         localStorage.removeItem(STORAGE_KEY)
         userEmail.value = null
+        profileLoaded.value = false
     }
-    async function loadProfile() {
+    async function loadProfile(force = false) {
         if (!token.value) return
+        // Se já carregou o perfil e não é forçado, não faz nada
+        if (profileLoaded.value && !force) return
         try {
             const { default: AuthService } = await import('@/services/AuthService')
             const res = await AuthService.profile()
             if ('username' in res) {
                 userEmail.value = res.username || null
+                profileLoaded.value = true
             }
         } catch {
             // Silently ignore profile loading errors

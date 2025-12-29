@@ -3,6 +3,7 @@ import { useAuthStore } from '@/stores/auth'
 import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult'
 import type { PaginatedResponse } from '@/types/PaginatedResponse'
 import type { PhotoAnalysisListItem } from '@/types/PhotoAnalysisListItem'
+import type { PhotoAnalysisDetail } from '@/types/PhotoAnalysisListItem'
 
 const PHOTO_ANALYSIS_URL = '/photo-analysis/analyze'
 const PHOTO_ANALYSIS_RESULTS_URL = '/photo-analysis/results'
@@ -41,6 +42,20 @@ export default class PhotoAnalysisService {
         const response = await api.get(PHOTO_ANALYSIS_RESULTS_URL, {
             headers,
             params: { page: pageNumber, limit: pageLimit },
+        })
+        return response.data
+    }
+
+    static async getResultDetail(id: number): Promise<PhotoAnalysisDetail> {
+        const authStore = useAuthStore()
+        const headers: Record<string, string> = {}
+
+        if (authStore.token) {
+            headers['Authorization'] = `Bearer ${authStore.token}`
+        }
+
+        const response = await api.get(`${PHOTO_ANALYSIS_RESULTS_URL}/${id}`, {
+            headers,
         })
         return response.data
     }
