@@ -61,6 +61,7 @@ function handleLogout() {
 
 const menuItems = [
     { label: 'Enviar Análise', icon: 'pi pi-upload', command: () => router.push('/') },
+    { label: 'Minhas análises', icon: 'pi pi-list', command: () => router.push('/results') },
     { label: 'Sair', icon: 'pi pi-sign-out', command: handleLogout }
 ];
 </script>
