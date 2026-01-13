@@ -3,6 +3,7 @@ const HomeView = () => import('@/views/HomeView.vue')
 const LoginView = () => import('@/views/LoginView.vue')
 const RegisterView = () => import('@/views/RegisterView.vue')
 const ResultsView = () => import('@/views/PhotoAnalysisResultsView.vue')
+const ProfileView = () => import('@/views/ProfileView.vue')
 import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
@@ -18,6 +19,12 @@ const router = createRouter({
             path: '/results',
             name: 'results',
             component: ResultsView,
+            meta: { requiresAuth: true },
+        },
+        {
+            path: '/profile',
+            name: 'profile',
+            component: ProfileView,
             meta: { requiresAuth: true },
         },
         {

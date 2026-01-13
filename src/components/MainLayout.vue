@@ -3,7 +3,13 @@
         <header class="header">
             <h1>Análise de imagem</h1>
             <div class="header-user" v-if="authStore.userEmail">
-                <Chip v-if="userDisplayName" icon="pi pi-user" :label="userDisplayName" />
+                <Chip
+                    v-if="userDisplayName"
+                    icon="pi pi-user"
+                    :label="userDisplayName"
+                    @click="router.push('/profile')"
+                    class="user-chip"
+                />
             </div>
         </header>
         <div class="layout-body">
@@ -12,8 +18,18 @@
                     <Menu :model="menuItems" :router="true" />
                 </div>
             </aside>
-            <Button v-if="!isDesktop" icon="pi pi-bars" class="sidebar-toggle" @click="sidebarVisible = true" />
-            <Drawer v-model:visible="sidebarVisible" position="left" :style="{ width: '250px' }" v-if="!isDesktop">
+            <Button
+                v-if="!isDesktop"
+                icon="pi pi-bars"
+                class="sidebar-toggle"
+                @click="sidebarVisible = true"
+            />
+            <Drawer
+                v-model:visible="sidebarVisible"
+                position="left"
+                :style="{ width: '250px' }"
+                v-if="!isDesktop"
+            >
                 <div class="sidebar-content">
                     <Menu :model="menuItems" :router="true" />
                 </div>
@@ -29,41 +45,42 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue';
-import { useRouter } from 'vue-router';
-import Drawer from 'primevue/drawer';
-import Menu from 'primevue/menu';
-import Button from 'primevue/button';
-import Chip from 'primevue/chip';
-import { useAuthStore } from '@/stores/auth';
+import { ref, onMounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import Drawer from 'primevue/drawer'
+import Menu from 'primevue/menu'
+import Button from 'primevue/button'
+import Chip from 'primevue/chip'
+import { useAuthStore } from '@/stores/auth'
 
-const router = useRouter();
-const authStore = useAuthStore();
-const sidebarVisible = ref(false);
-const isDesktop = ref(window.innerWidth >= 1024);
+const router = useRouter()
+const authStore = useAuthStore()
+const sidebarVisible = ref(false)
+const isDesktop = ref(window.innerWidth >= 1024)
 window.addEventListener('resize', () => {
-    isDesktop.value = window.innerWidth >= 1024;
-});
+    isDesktop.value = window.innerWidth >= 1024
+})
 
 const userDisplayName = computed(() => {
-    if (!authStore.userEmail) return '';
-    return authStore.userEmail.split('@')[0];
-});
+    if (!authStore.userEmail) return ''
+    return authStore.userEmail.split('@')[0]
+})
 
 onMounted(() => {
-    authStore.loadProfile();
-});
+    authStore.loadProfile()
+})
 
 function handleLogout() {
-    authStore.clearToken();
-    router.push('/login');
+    authStore.clearToken()
+    router.push('/login')
 }
 
 const menuItems = [
     { label: 'Enviar Análise', icon: 'pi pi-upload', command: () => router.push('/') },
     { label: 'Minhas análises', icon: 'pi pi-list', command: () => router.push('/results') },
-    { label: 'Sair', icon: 'pi pi-sign-out', command: handleLogout }
-];
+    { label: 'Meu Perfil', icon: 'pi pi-user', command: () => router.push('/profile') },
+    { label: 'Sair', icon: 'pi pi-sign-out', command: handleLogout },
+]
 </script>
 
 <style scoped>
@@ -104,6 +121,13 @@ const menuItems = [
     color: #fff;
     font-size: 0.8rem;
     opacity: 0.9;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+:deep(.p-chip:hover) {
+    background: rgba(255, 255, 255, 0.2);
+    opacity: 1;
 }
 
 :deep(.p-chip .p-chip-icon) {
