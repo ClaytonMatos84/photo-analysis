@@ -31,18 +31,6 @@
                 </div>
 
                 <div class="form-field">
-                    <label for="address" class="form-label">Endereço</label>
-                    <InputText
-                        id="address"
-                        v-model="formData.address"
-                        placeholder="Digite seu endereço"
-                        :invalid="!!errors.address"
-                        class="w-full"
-                    />
-                    <small v-if="errors.address" class="form-error">{{ errors.address }}</small>
-                </div>
-
-                <div class="form-field">
                     <label for="profession" class="form-label">Profissão</label>
                     <InputText
                         id="profession"
@@ -54,6 +42,18 @@
                     <small v-if="errors.profession" class="form-error">{{
                         errors.profession
                     }}</small>
+                </div>
+
+                <div class="form-field">
+                    <label for="address" class="form-label">Endereço</label>
+                    <InputText
+                        id="address"
+                        v-model="formData.address"
+                        placeholder="Digite seu endereço"
+                        :invalid="!!errors.address"
+                        class="w-full"
+                    />
+                    <small v-if="errors.address" class="form-error">{{ errors.address }}</small>
                 </div>
             </div>
 
@@ -248,7 +248,7 @@ onMounted(() => {
     }
 
     .form-field:first-child,
-    .form-field:nth-child(3) {
+    .form-field:nth-child(4) {
         grid-column: 1 / -1;
     }
 }
