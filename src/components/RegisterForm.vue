@@ -71,7 +71,7 @@ const successMessage = ref('');
 const isLoading = ref(false);
 
 function validatePasswords() {
-    if (password.value !== confirmPassword.value) {
+    if (password.value.value !== confirmPassword.value.value) {
         confirmPassword.value.error = 'As senhas não coincidem';
         return false;
     }

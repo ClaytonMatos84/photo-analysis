@@ -25,7 +25,12 @@ export default class PhotoAnalysisService {
         const response = await api.post(PHOTO_ANALYSIS_URL, formData, {
             headers,
         })
-        return response.data
+        if (!response || !response.data) {
+            throw new Error('Erro ao analisar a foto')
+        }
+
+        const result: PhotoAnalysisResult = response.data
+        return result
     }
 
     static async listResults(
