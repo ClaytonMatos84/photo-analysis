@@ -1,63 +1,110 @@
 # photo-analysis
 
-This template should help get you started developing with Vue 3 in Vite.
+Aplicacao frontend em Vue 3 + Vite para analise de fotos e anuncios.
 
-## Recommended IDE Setup
+## Stack
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- Vue 3
+- Vite 7
+- TypeScript
+- Vue Router
+- Pinia
+- PrimeVue
+- Axios
 
-## Recommended Browser Setup
+## Requisitos
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+- Node.js: `^20.19.0` ou `>=22.12.0`
+- npm
 
-## Type Support for `.vue` Imports in TS
+## Configuracao de ambiente
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-````sh
-npm run lint
-
-### Environment Variables
-
-Create a `.env` file based on `.env.example` and set your backend base URL:
+Crie o arquivo `.env` a partir do exemplo:
 
 ```sh
 cp .env.example .env
-````
+```
 
-Then edit `.env` with your server address:
+Variavel utilizada pela aplicacao:
 
 ```sh
 VITE_BASE_SERVER_URL=http://localhost:3000
 ```
 
-The app uses a centralized Axios client reading this value and attaching the JWT from `localStorage` when present.
+Essa URL e usada pelo cliente Axios central em `src/services/api.ts`.
+As requisicoes incluem o token JWT salvo em `localStorage` (`auth_token`) quando presente.
+
+## Instalar dependencias
+
+```sh
+npm install
+```
+
+## Rodar em desenvolvimento
+
+```sh
+npm run dev
+```
+
+Por padrao, o Vite sobe em `http://localhost:5173`.
+
+## Scripts disponiveis
+
+```sh
+# Desenvolvimento
+npm run dev
+
+# Build de producao (inclui type-check)
+npm run build
+
+# Preview do build
+npm run preview
+
+# Type-check
+npm run type-check
+
+# Lint (com --fix)
+npm run lint
+
+# Formatacao com Prettier (src/)
+npm run format
+```
+
+## Docker
+
+O projeto possui `Dockerfile` multi-stage com build do Vite e entrega via Nginx.
+
+Para subir com Docker Compose:
+
+```sh
+docker compose up -d --build
+```
+
+Com a configuracao atual de `docker-compose.yml`, a aplicacao fica disponivel em:
+
+```text
+http://localhost:9393
+```
+
+Comandos uteis:
+
+```sh
+docker compose logs -f photo-analysis
+docker compose down
+docker compose exec photo-analysis sh
+```
+
+Atalho via Makefile:
+
+```sh
+make create
+```
+
+## Estrutura principal
+
+- `src/components`: componentes de UI e dashboards
+- `src/views`: paginas principais
+- `src/services`: comunicacao com API (Axios)
+- `src/stores`: estado global (Pinia)
+- `src/router`: rotas da aplicacao
+- `src/composables`: hooks reutilizaveis

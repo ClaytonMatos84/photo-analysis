@@ -1,7 +1,22 @@
 <template>
     <MainLayout>
         <template #default>
-            <PhotoAnalysisResults />
+            <section class="results-tabs-wrapper">
+                <Tabs value="photos">
+                    <TabList>
+                        <Tab value="photos">Análises de fotos</Tab>
+                        <Tab value="ads">Análises de anúncios</Tab>
+                    </TabList>
+                    <TabPanels>
+                        <TabPanel value="photos">
+                            <PhotoAnalysisResults />
+                        </TabPanel>
+                        <TabPanel value="ads">
+                            <AdAnalysisResults />
+                        </TabPanel>
+                    </TabPanels>
+                </Tabs>
+            </section>
         </template>
     </MainLayout>
 </template>
@@ -9,4 +24,17 @@
 <script setup lang="ts">
 import MainLayout from '@/components/MainLayout.vue'
 import PhotoAnalysisResults from '@/components/PhotoAnalysisResults.vue'
+import AdAnalysisResults from '@/components/AdAnalysisResults.vue'
+import Tabs from 'primevue/tabs'
+import TabList from 'primevue/tablist'
+import Tab from 'primevue/tab'
+import TabPanels from 'primevue/tabpanels'
+import TabPanel from 'primevue/tabpanel'
 </script>
+
+<style scoped>
+.results-tabs-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+</style>

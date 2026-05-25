@@ -77,6 +77,11 @@ function handleLogout() {
 
 const menuItems = [
     { label: 'Enviar Análise', icon: 'pi pi-upload', command: () => router.push('/') },
+    {
+        label: 'Análise de anúncio',
+        icon: 'pi pi-megaphone',
+        command: () => router.push('/ad-analysis'),
+    },
     { label: 'Minhas análises', icon: 'pi pi-list', command: () => router.push('/results') },
     { label: 'Meu Perfil', icon: 'pi pi-user', command: () => router.push('/profile') },
     { label: 'Sair', icon: 'pi pi-sign-out', command: handleLogout },

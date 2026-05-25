@@ -15,3 +15,15 @@ export interface PhotoAnalysisDetail {
     feeling: string
     createdAt: string
 }
+
+export interface AdAnalysisListItem {
+    analysisId: string
+    dataAnalise: string
+    comparador: {
+        marcaAnalisada: string
+    }
+    melhoria: {
+        principalConcorrente: string
+        url: string
+    }
+}
