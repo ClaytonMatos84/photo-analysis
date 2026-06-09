@@ -169,9 +169,9 @@ import { onMounted, ref } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Dialog from 'primevue/dialog'
-import PhotoAnalysisService from '@/services/PhotoAnalysisService'
-import type { YouTubeAnalysisListItem } from '@/types/PhotoAnalysisListItem'
-import type { YouTubeAnalysisDetail } from '@/types/PhotoAnalysisListItem'
+import YouTubeAnalysisService from '@/services/YouTubeAnalysisService'
+import type { YouTubeAnalysisListItem } from '@/types/YouTubeAnalysisTypes'
+import type { YouTubeAnalysisDetail } from '@/types/YouTubeAnalysisTypes'
 
 const items = ref<YouTubeAnalysisListItem[]>([])
 const total = ref(0)
@@ -187,7 +187,7 @@ const detailLoading = ref(false)
 async function load() {
     loading.value = true
     try {
-        const res = await PhotoAnalysisService.listYoutubeResults(page.value, limit.value)
+        const res = await YouTubeAnalysisService.listResults(page.value, limit.value)
         items.value = res.data
         total.value = res.total
         page.value = res.page
@@ -208,7 +208,7 @@ async function openDetails(id: number) {
     detailLoading.value = true
     showModal.value = true
     try {
-        selectedDetail.value = await PhotoAnalysisService.getYoutubeResultDetail(id)
+        selectedDetail.value = await YouTubeAnalysisService.getResultDetail(id)
     } finally {
         detailLoading.value = false
     }

@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
+import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisTypes';
 import Card from 'primevue/card';
 defineProps<{ objects: PhotoAnalysisResult['objetos_identificados'] }>();
 </script>

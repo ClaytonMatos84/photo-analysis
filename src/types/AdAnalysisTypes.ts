@@ -1,16 +1,3 @@
-export interface PhotoAnalysisResult {
-    descricao_cena: string
-    objetos_identificados: string[]
-    pessoas: {
-        quantidade: string
-        descricao: string
-    }
-    local_ambiente: string
-    estilo_foto: string
-    sentimento_transmitido: string
-    observacoes_adicionais: string
-}
-
 export interface AdAnalysisComparador {
     marcaAnalisada: string
     resumoPosicionamentoMarca: string
@@ -55,19 +42,14 @@ export interface AdAnalysisResult {
     melhoria: AdAnalysisMelhoria
 }
 
-export interface YouTubeAnalysisResult {
-    id: number
-    youtubeUrl: string
-    videoId: string
-    title: string
-    lengthSeconds: string
-    channelId: string
-    shortDescription: string
-    viewCount: string
-    author: string
-    isLiveContent: boolean
-    likeCount: string
-    category: string
-    ownerProfileUrl: string
-    createdAt: string
+export interface AdAnalysisListItem {
+    analysisId: string
+    dataAnalise: string
+    comparador: {
+        marcaAnalisada: string
+    }
+    melhoria: {
+        principalConcorrente: string
+        url: string
+    }
 }

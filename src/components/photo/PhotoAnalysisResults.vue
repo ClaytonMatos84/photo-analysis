@@ -60,8 +60,8 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Dialog from 'primevue/dialog'
 import PhotoAnalysisService from '@/services/PhotoAnalysisService'
-import type { PhotoAnalysisListItem } from '@/types/PhotoAnalysisListItem'
-import type { PhotoAnalysisDetail } from '@/types/PhotoAnalysisListItem'
+import type { PhotoAnalysisListItem } from '@/types/PhotoAnalysisTypes'
+import type { PhotoAnalysisDetail } from '@/types/PhotoAnalysisTypes'
 
 const items = ref<PhotoAnalysisListItem[]>([])
 const total = ref(0)

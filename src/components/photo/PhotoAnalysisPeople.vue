@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 import Card from 'primevue/card';
-import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
+import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisTypes';
 defineProps<{ people: PhotoAnalysisResult['pessoas'] }>();
 </script>
 

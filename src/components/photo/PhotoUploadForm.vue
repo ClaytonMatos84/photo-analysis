@@ -25,7 +25,7 @@ import FileUpload from 'primevue/fileupload';
 import ProgressSpinner from 'primevue/progressspinner';
 import Message from 'primevue/message';
 import PhotoAnalysisService from '@/services/PhotoAnalysisService';
-import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
+import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisTypes';
 import { useToast } from '@/composables/useToast';
 import { useErrorHandler } from '@/composables/useErrorHandler';
 

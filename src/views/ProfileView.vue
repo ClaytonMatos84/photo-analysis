@@ -16,8 +16,8 @@
 </template>
 
 <script setup lang="ts">
-import MainLayout from '@/components/MainLayout.vue'
-import UserProfileForm from '@/components/UserProfileForm.vue'
+import MainLayout from '@/components/utils/MainLayout.vue'
+import UserProfileForm from '@/components/auth/UserProfileForm.vue'
 </script>
 
 <style scoped>

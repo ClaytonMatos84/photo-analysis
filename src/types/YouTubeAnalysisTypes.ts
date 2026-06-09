@@ -1,31 +1,18 @@
-export interface PhotoAnalysisListItem {
+export interface YouTubeAnalysisResult {
     id: number
-    description: string
-    location: string
-    style: string
-    feeling: string
-}
-
-export interface PhotoAnalysisDetail {
-    id: number
-    userId: number
-    description: string
-    location: string
-    style: string
-    feeling: string
+    youtubeUrl: string
+    videoId: string
+    title: string
+    lengthSeconds: string
+    channelId: string
+    shortDescription: string
+    viewCount: string
+    author: string
+    isLiveContent: boolean
+    likeCount: string
+    category: string
+    ownerProfileUrl: string
     createdAt: string
-}
-
-export interface AdAnalysisListItem {
-    analysisId: string
-    dataAnalise: string
-    comparador: {
-        marcaAnalisada: string
-    }
-    melhoria: {
-        principalConcorrente: string
-        url: string
-    }
 }
 
 export interface YouTubeAnalysisListItem {

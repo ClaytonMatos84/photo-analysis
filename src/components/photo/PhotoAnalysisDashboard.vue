@@ -16,14 +16,14 @@
 </template>
 
 <script lang="ts" setup>
-import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
-import PhotoAnalysisObjects from '@/components/PhotoAnalysisObjects.vue';
-import PhotoAnalysisPeople from '@/components/PhotoAnalysisPeople.vue';
-import SectionTitle from '@/components/SectionTitle.vue';
-import PhotoAnalysisLocation from '@/components/PhotoAnalysisLocation.vue';
-import PhotoAnalysisStyle from '@/components/PhotoAnalysisStyle.vue';
-import PhotoAnalysisSentiment from '@/components/PhotoAnalysisSentiment.vue';
-import PhotoAnalysisNotes from '@/components/PhotoAnalysisNotes.vue';
+import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisTypes';
+import PhotoAnalysisObjects from '@/components/photo/PhotoAnalysisObjects.vue';
+import PhotoAnalysisPeople from '@/components/photo/PhotoAnalysisPeople.vue';
+import SectionTitle from '@/components/utils/SectionTitle.vue';
+import PhotoAnalysisLocation from '@/components/photo/PhotoAnalysisLocation.vue';
+import PhotoAnalysisStyle from '@/components/photo/PhotoAnalysisStyle.vue';
+import PhotoAnalysisSentiment from '@/components/photo/PhotoAnalysisSentiment.vue';
+import PhotoAnalysisNotes from '@/components/photo/PhotoAnalysisNotes.vue';
 
 defineProps<{ result: PhotoAnalysisResult; imageFile?: File }>();
 </script>

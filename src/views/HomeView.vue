@@ -21,11 +21,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import MainLayout from '@/components/MainLayout.vue';
-import PhotoUploadForm from '@/components/PhotoUploadForm.vue';
-import PhotoAnalysisDashboard from '@/components/PhotoAnalysisDashboard.vue';
-import PhotoDisplay from '@/components/PhotoDisplay.vue';
-import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisResult';
+import MainLayout from '@/components/utils/MainLayout.vue';
+import PhotoUploadForm from '@/components/photo/PhotoUploadForm.vue';
+import PhotoAnalysisDashboard from '@/components/photo/PhotoAnalysisDashboard.vue';
+import PhotoDisplay from '@/components/photo/PhotoDisplay.vue';
+import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisTypes';
 
 const analysisResult = ref<PhotoAnalysisResult | null>(null);
 const imageFile = ref<File | undefined>(undefined);

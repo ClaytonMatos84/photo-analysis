@@ -64,10 +64,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import axios from 'axios'
-import MainLayout from '@/components/MainLayout.vue'
-import AdAnalysisDashboard from '@/components/AdAnalysisDashboard.vue'
-import PhotoAnalysisService from '@/services/PhotoAnalysisService'
-import type { AdAnalysisResult } from '@/types/PhotoAnalysisResult'
+import MainLayout from '@/components/utils/MainLayout.vue'
+import AdAnalysisDashboard from '@/components/ad/AdAnalysisDashboard.vue'
+import AdAnalysisService from '@/services/AdAnalysisService'
+import type { AdAnalysisResult } from '@/types/AdAnalysisTypes'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import Message from 'primevue/message'
@@ -110,7 +110,7 @@ async function handleAnalyze() {
     analysisResult.value = null
 
     try {
-        const result = await PhotoAnalysisService.analyzeAdImage(imageUrl.value.trim())
+        const result = await AdAnalysisService.analyzeAdImage(imageUrl.value.trim())
         analysisResult.value = result
         showSuccess('Análise concluída!', 'Anúncio analisado com sucesso')
     } catch (error) {

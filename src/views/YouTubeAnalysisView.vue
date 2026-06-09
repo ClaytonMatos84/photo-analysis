@@ -31,7 +31,7 @@
                     </Message>
                 </header>
 
-                <section v-if="submittedVideoId" class="video-preview-card">
+                <section v-if="analysisResult && submittedVideoId" class="video-preview-card">
                     <h3>Pre-visualizacao do video</h3>
                     <div class="video-frame-wrapper">
                         <iframe
@@ -58,10 +58,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import axios from 'axios'
-import MainLayout from '@/components/MainLayout.vue'
-import YouTubeAnalysisDashboard from '@/components/YouTubeAnalysisDashboard.vue'
-import PhotoAnalysisService from '@/services/PhotoAnalysisService'
-import type { YouTubeAnalysisResult } from '@/types/PhotoAnalysisResult'
+import MainLayout from '@/components/utils/MainLayout.vue'
+import YouTubeAnalysisDashboard from '@/components/youtube/YouTubeAnalysisDashboard.vue'
+import YouTubeAnalysisService from '@/services/YouTubeAnalysisService'
+import type { YouTubeAnalysisResult } from '@/types/YouTubeAnalysisTypes'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import Message from 'primevue/message'
@@ -132,15 +132,12 @@ async function handleAnalyze() {
     isLoading.value = true
     errorMessage.value = ''
     analysisResult.value = null
-    submittedVideoId.value = extractedVideoId.value
+    submittedVideoId.value = ''
 
     try {
-        const result = await PhotoAnalysisService.analyzeYoutubeVideo(trimmedUrl)
+        const result = await YouTubeAnalysisService.analyzeVideo(trimmedUrl)
         analysisResult.value = result
-
-        if (result.videoId) {
-            submittedVideoId.value = result.videoId
-        }
+        submittedVideoId.value = result.videoId || extractedVideoId.value
 
         showSuccess('Analise concluida!', 'Video do YouTube analisado com sucesso')
     } catch (error) {

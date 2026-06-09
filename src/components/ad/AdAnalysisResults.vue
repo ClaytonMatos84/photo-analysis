@@ -175,9 +175,9 @@ import { onMounted, ref } from 'vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Dialog from 'primevue/dialog'
-import PhotoAnalysisService from '@/services/PhotoAnalysisService'
-import type { AdAnalysisListItem } from '@/types/PhotoAnalysisListItem'
-import type { AdAnalysisResult } from '@/types/PhotoAnalysisResult'
+import AdAnalysisService from '@/services/AdAnalysisService'
+import type { AdAnalysisListItem } from '@/types/AdAnalysisTypes'
+import type { AdAnalysisResult } from '@/types/AdAnalysisTypes'
 
 const items = ref<AdAnalysisListItem[]>([])
 const total = ref(0)
@@ -193,7 +193,7 @@ const detailLoading = ref(false)
 async function load() {
     loading.value = true
     try {
-        const res = await PhotoAnalysisService.listAdResults(page.value, limit.value)
+        const res = await AdAnalysisService.listResults(page.value, limit.value)
         items.value = res.data
         total.value = res.total
         page.value = res.page
@@ -214,7 +214,7 @@ async function openDetails(analysisId: string) {
     detailLoading.value = true
     showModal.value = true
     try {
-        selectedDetail.value = await PhotoAnalysisService.getAdResultDetail(analysisId)
+        selectedDetail.value = await AdAnalysisService.getResultDetail(analysisId)
     } finally {
         detailLoading.value = false
     }

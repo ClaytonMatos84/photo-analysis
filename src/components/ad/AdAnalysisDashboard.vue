@@ -49,8 +49,8 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import Card from 'primevue/card'
-import SectionTitle from '@/components/SectionTitle.vue'
-import type { AdAnalysisResult } from '@/types/PhotoAnalysisResult'
+import SectionTitle from '@/components/utils/SectionTitle.vue'
+import type { AdAnalysisResult } from '@/types/AdAnalysisTypes'
 
 const props = defineProps<{ result: AdAnalysisResult }>()
 

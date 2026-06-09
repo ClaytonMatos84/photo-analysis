@@ -21,7 +21,7 @@ api.interceptors.request.use((config) => {
 // Response interceptor: Trata erros de resposta
 api.interceptors.response.use(
     (response) => response,
-    async (error) => {
+    (error) => {
         const config = error.config
 
         // Se for erro 401 (não autorizado) e não for uma tentativa de retry
@@ -31,12 +31,7 @@ api.interceptors.response.use(
             try {
                 // Limpa o token inválido
                 localStorage.removeItem('auth_token')
-
-                // Tenta fazer refresh do token se houver endpoint disponível
-                // Caso contrário, o usuário será redirecionado para login
-                const { useAuthStore } = await import('@/stores/auth')
-                const authStore = useAuthStore()
-                authStore.clearToken()
+                delete api.defaults.headers.common['Authorization']
 
                 // Se houver uma rota de redirect, redireciona para login
                 if (typeof window !== 'undefined') {

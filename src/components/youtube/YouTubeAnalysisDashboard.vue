@@ -66,8 +66,8 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import Card from 'primevue/card'
-import SectionTitle from '@/components/SectionTitle.vue'
-import type { YouTubeAnalysisResult } from '@/types/PhotoAnalysisResult'
+import SectionTitle from '@/components/utils/SectionTitle.vue'
+import type { YouTubeAnalysisResult } from '@/types/YouTubeAnalysisTypes'
 
 const props = defineProps<{ result: YouTubeAnalysisResult }>()
 

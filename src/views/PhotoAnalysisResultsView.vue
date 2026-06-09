@@ -26,10 +26,10 @@
 </template>
 
 <script setup lang="ts">
-import MainLayout from '@/components/MainLayout.vue'
-import PhotoAnalysisResults from '@/components/PhotoAnalysisResults.vue'
-import AdAnalysisResults from '@/components/AdAnalysisResults.vue'
-import YouTubeAnalysisResults from '@/components/YouTubeAnalysisResults.vue'
+import MainLayout from '@/components/utils/MainLayout.vue'
+import PhotoAnalysisResults from '@/components/photo/PhotoAnalysisResults.vue'
+import AdAnalysisResults from '@/components/ad/AdAnalysisResults.vue'
+import YouTubeAnalysisResults from '@/components/youtube/YouTubeAnalysisResults.vue'
 import Tabs from 'primevue/tabs'
 import TabList from 'primevue/tablist'
 import Tab from 'primevue/tab'
