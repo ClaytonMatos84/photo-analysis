@@ -6,6 +6,7 @@
                     <TabList>
                         <Tab value="photos">Análises de fotos</Tab>
                         <Tab value="ads">Análises de anúncios</Tab>
+                        <Tab value="youtube">Análises de vídeos</Tab>
                     </TabList>
                     <TabPanels>
                         <TabPanel value="photos">
@@ -13,6 +14,9 @@
                         </TabPanel>
                         <TabPanel value="ads">
                             <AdAnalysisResults />
+                        </TabPanel>
+                        <TabPanel value="youtube">
+                            <YouTubeAnalysisResults />
                         </TabPanel>
                     </TabPanels>
                 </Tabs>
@@ -25,6 +29,7 @@
 import MainLayout from '@/components/MainLayout.vue'
 import PhotoAnalysisResults from '@/components/PhotoAnalysisResults.vue'
 import AdAnalysisResults from '@/components/AdAnalysisResults.vue'
+import YouTubeAnalysisResults from '@/components/YouTubeAnalysisResults.vue'
 import Tabs from 'primevue/tabs'
 import TabList from 'primevue/tablist'
 import Tab from 'primevue/tab'

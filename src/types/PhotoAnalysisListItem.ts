@@ -27,3 +27,29 @@ export interface AdAnalysisListItem {
         url: string
     }
 }
+
+export interface YouTubeAnalysisListItem {
+    id: number
+    youtubeUrl: string | null
+    title: string | null
+    author: string | null
+    category: string | null
+    createdAt: string | null
+}
+
+export interface YouTubeAnalysisDetail {
+    id: number
+    youtubeUrl: string | null
+    videoId: string | null
+    title: string | null
+    lengthSeconds: string | null
+    channelId: string | null
+    shortDescription: string | null
+    viewCount: string | null
+    author: string | null
+    isLiveContent: boolean
+    likeCount: string | null
+    category: string | null
+    ownerProfileUrl: string | null
+    createdAt: string | null
+}

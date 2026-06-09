@@ -54,3 +54,20 @@ export interface AdAnalysisResult {
     estrategia: AdAnalysisEstrategia
     melhoria: AdAnalysisMelhoria
 }
+
+export interface YouTubeAnalysisResult {
+    id: number
+    youtubeUrl: string
+    videoId: string
+    title: string
+    lengthSeconds: string
+    channelId: string
+    shortDescription: string
+    viewCount: string
+    author: string
+    isLiveContent: boolean
+    likeCount: string
+    category: string
+    ownerProfileUrl: string
+    createdAt: string
+}
