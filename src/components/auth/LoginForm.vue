@@ -7,6 +7,7 @@
                     <IconField class="w-full">
                         <InputIcon class="pi pi-envelope text-white/70" />
                         <InputText v-model="email.value" type="email" class="w-full" placeholder="Email"
+                            @focus="clearFieldError('email')"
                             :class="{ 'p-invalid': !!email.error }" />
                     </IconField>
                     <Message v-if="email.error" severity="error" class="login-error-msg" :closable="false">{{
@@ -14,6 +15,7 @@
                     <IconField class="w-full">
                         <InputIcon class="pi pi-lock text-white/70" />
                         <InputText v-model="password.value" type="password" class="w-full" placeholder="Senha"
+                            @focus="clearFieldError('password')"
                             autocomplete="false" :class="{ 'p-invalid': !!password.error }" />
                     </IconField>
                     <Message v-if="password.error" severity="error" class="login-error-msg" :closable="false">{{
@@ -59,6 +61,18 @@ const password = createField([validators.required, validators.minLength(6)]);
 const isLoading = ref(false);
 const formError = ref('');
 
+function clearFieldError(fieldName: 'email' | 'password') {
+    if (fieldName === 'email') {
+        email.value.error = '';
+    } else {
+        password.value.error = '';
+    }
+
+    if (formError.value) {
+        formError.value = '';
+    }
+}
+
 async function handleLogin() {
     if (!validateForm({ email, password })) return;
 
@@ -82,7 +96,7 @@ async function handleLogin() {
                 }
             }, 800);
         } else {
-            formError.value = response.message || 'Erro ao realizar login.';
+            formError.value = response.message || 'Login ou senha inválidos.';
             showError('Erro no login', formError.value);
         }
     } catch (error) {

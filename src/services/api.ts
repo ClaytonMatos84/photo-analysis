@@ -23,9 +23,11 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         const config = error.config
+        const requestUrl = String(config?.url || '')
+        const isAuthLoginRequest = requestUrl.includes('/auth/login')
 
         // Se for erro 401 (não autorizado) e não for uma tentativa de retry
-        if (error.response?.status === 401 && !config._retry) {
+        if (error.response?.status === 401 && !config?._retry && !isAuthLoginRequest) {
             config._retry = true
 
             try {
