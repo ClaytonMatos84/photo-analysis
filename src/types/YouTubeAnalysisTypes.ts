@@ -40,3 +40,20 @@ export interface YouTubeAnalysisDetail {
     ownerProfileUrl: string | null
     createdAt: string | null
 }
+
+export interface YouTubeTopVideo {
+    id: number
+    youtubeUrl: string
+    videoId: string
+    title: string
+    author: string
+    viewCount: number
+    likeCount: number
+    createdAt: string
+}
+
+export interface YouTubeTopVideosResponse {
+    metric: 'viewCount' | 'likeCount'
+    totalReturned: number
+    videos: YouTubeTopVideo[]
+}

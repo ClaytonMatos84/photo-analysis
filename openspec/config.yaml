@@ -1,0 +1,45 @@
+schema: spec-driven
+
+# Project context — shown to AI when creating artifacts
+context: |
+  Tech stack: Vue 3.5, Vite 7, TypeScript 5.9, Pinia, PrimeVue 4 (Aura theme), Axios, Vue Router 4
+  Runtime: Node.js ^20.19.0 || >=22.12.0
+  Deploy: Docker (multi-stage) + Nginx Alpine
+  Language: Portuguese (BR) for domain and UI; code/commits in English
+
+  Architecture:
+    - SPA frontend consuming a REST API backend with JWT auth (token in localStorage as auth_token)
+    - Views are thin wrappers composing MainLayout + domain components
+    - Services (PascalCase + Service.ts) encapsulate Axios HTTP calls; interceptor injects Authorization header
+    - Composables (use* prefix) for reusable logic (useToast, useFormValidator, useErrorHandler, useLoadingState)
+    - Stores: Pinia (auth store in stores/auth.ts)
+    - Components organized by domain: ad, auth, photo, youtube, utils under src/components/
+    - Types in src/types/ (PascalCase + Types.ts)
+
+  Conventions:
+    - <script setup lang="ts"> in all Vue components
+    - 4-space indent, single quotes, no semicolons, max line width 100
+    - Path alias: @/ → src/
+    - Scoped CSS in all components; PrimeVue for UI primitives
+    - Lazy-loaded views in router: () => import('@/views/XView.vue')
+    - No automated tests — validate via type-check and lint
+    - Uploads use multipart/form-data (delegate Content-Type to Axios)
+    - Analysis endpoints timeout: 120s
+
+  Domain: Photo/ad/video analysis platform (upload photos, analyze ads, analyze YouTube videos)
+
+# Per-artifact rules
+rules:
+  proposal:
+    - Always include a "Non-goals" section
+    - Reference existing domain components by path
+  design:
+    - Reference PrimeVue components by name when suggesting UI
+    - Respect MainLayout + SectionTitle patterns for authenticated views
+  spec:
+    - Include API contract details when changes touch services/
+    - Note JWT auth requirements for protected endpoints
+  tasks:
+    - Break tasks into chunks of max 2 hours
+    - Each task must be type-checkable (vue-tsc --build)
+    - Include validation step: npm run type-check && npm run lint

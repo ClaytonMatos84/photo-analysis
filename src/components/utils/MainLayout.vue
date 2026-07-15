@@ -39,7 +39,7 @@
             </main>
         </div>
         <footer class="footer">
-            <span>© 2025 Análise de imagens | Desenvolvido com PrimeVue</span>
+            <span>© {{ year }} Análise de imagens | Desenvolvido com PrimeVue</span>
         </footer>
     </div>
 </template>
@@ -57,6 +57,7 @@ const router = useRouter()
 const authStore = useAuthStore()
 const sidebarVisible = ref(false)
 const isDesktop = ref(window.innerWidth >= 1024)
+const year = new Date().getFullYear()
 window.addEventListener('resize', () => {
     isDesktop.value = window.innerWidth >= 1024
 })
@@ -86,6 +87,11 @@ const menuItems = [
         label: 'Análise de vídeo YouTube',
         icon: 'pi pi-youtube',
         command: () => router.push('/youtube-analysis'),
+    },
+    {
+        label: 'Top Vídeos YouTube',
+        icon: 'pi pi-chart-bar',
+        command: () => router.push('/youtube-top-videos'),
     },
     { label: 'Minhas análises', icon: 'pi pi-list', command: () => router.push('/results') },
     { label: 'Meu Perfil', icon: 'pi pi-user', command: () => router.push('/profile') },

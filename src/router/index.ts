@@ -6,6 +6,7 @@ const ResultsView = () => import('@/views/PhotoAnalysisResultsView.vue')
 const ProfileView = () => import('@/views/ProfileView.vue')
 const AdAnalysisView = () => import('@/views/AdAnalysisView.vue')
 const YouTubeAnalysisView = () => import('@/views/YouTubeAnalysisView.vue')
+const YouTubeTopVideosView = () => import('@/views/YouTubeTopVideosView.vue')
 import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
@@ -39,6 +40,12 @@ const router = createRouter({
             path: '/youtube-analysis',
             name: 'youtube-analysis',
             component: YouTubeAnalysisView,
+            meta: { requiresAuth: true },
+        },
+        {
+            path: '/youtube-top-videos',
+            name: 'youtube-top-videos',
+            component: YouTubeTopVideosView,
             meta: { requiresAuth: true },
         },
         {
