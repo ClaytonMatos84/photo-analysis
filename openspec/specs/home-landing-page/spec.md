@@ -2,31 +2,42 @@
 
 ## Purpose
 
-Landing page full-width que serve como ponto de entrada pós-login, apresentando as capacidades de análise de mídias (foto, anúncio, YouTube) e dando acesso rápido a cada funcionalidade.
+Landing page que serve como ponto de entrada pós-login, renderizada dentro do `MainLayout` compartilhado (com `AppHeader`/`AppFooter`), apresentando as capacidades de análise de mídias (foto, anúncio, YouTube) e dando acesso rápido a cada funcionalidade.
 
 ## Requirements
 
-### Requirement: Home landing page full-width
-A HomeView SHALL renderizar uma landing page full-width sem MainLayout/sidebar após o login. A home SHALL conter 5 seções na ordem: Hero, Stats, Feature Cards, How It Works, Carousel.
+### Requirement: Home landing page com MainLayout compartilhado
+A HomeView SHALL renderizar dentro de `MainLayout` (com `AppHeader` e `AppFooter` compartilhados com as demais páginas autenticadas), em vez de renderizar header/footer próprios sem `MainLayout`. A home SHALL conter 5 seções na ordem: Hero (via `PageHero`), Stats, Feature Cards, How It Works, Carousel.
 
 #### Scenario: Usuário autenticado acessa a raiz
 - **WHEN** usuário autenticado navega para `/`
-- **THEN** sistema renderiza HomeView como landing page full-width (sem sidebar) com as 5 seções visíveis
+- **THEN** sistema renderiza HomeView dentro de `MainLayout`, com `AppHeader` no topo, `AppFooter` no rodapé, e as 5 seções visíveis entre eles
 
 #### Scenario: Navegação para análise de foto
 - **WHEN** usuário clica no CTA "Começar Agora" ou no card de Feature "Análise de foto"
 - **THEN** sistema navega para `/photo-analysis`
 
-### Requirement: Hero section com CTA
-A Hero section SHALL exibir título "Análise de Mídias", subtítulo descritivo sobre IA, e botão CTA "Começar Agora" que navega para `/photo-analysis`. A section SHALL ter background com gradiente.
+### Requirement: Hero section com CTA via PageHero
+A Hero section da HomeView SHALL usar o componente reutilizável `PageHero` (título "Análise de Mídias", ícone `pi pi-images`, descrição sobre IA) e SHALL passar o botão CTA "Começar Agora" através do slot do `PageHero`. A section SHALL manter o background com gradiente do `PageHero`.
 
 #### Scenario: Hero renderiza conteúdo
 - **WHEN** HomeView monta
-- **THEN** hero section exibe título "Análise de Mídias", subtítulo contendo "inteligência artificial", e botão "Começar Agora"
+- **THEN** `PageHero` exibe título "Análise de Mídias", descrição contendo "inteligência artificial", e o botão "Começar Agora" é renderizado via slot dentro do hero
 
 #### Scenario: CTA navigation
 - **WHEN** usuário clica em "Começar Agora"
 - **THEN** router navega para `/photo-analysis`
+
+### Requirement: MainLayout sem header/menu específicos da home
+O `MainLayout` usado pela HomeView SHALL ser o mesmo componente compartilhado por todas as views autenticadas (`AppHeader` com nav + submenu YouTube + dropdown de usuário, `AppFooter` unificado), sem um header title fixo "Análise de mídias" nem menu de sidebar específico.
+
+#### Scenario: Header consistente com as demais páginas
+- **WHEN** HomeView renderiza
+- **THEN** o header exibido é o `AppHeader` compartilhado (logo, nav com links, submenu YouTube, chip/dropdown de usuário), idêntico ao usado em `/photo-analysis`, `/ad-analysis`, etc.
+
+#### Scenario: Sem sidebar na home
+- **WHEN** HomeView renderiza
+- **THEN** nenhum menu lateral (sidebar) é exibido; a navegação ocorre via `AppHeader`
 
 ### Requirement: Stats section com dados reais
 A Stats section SHALL exibir contagem total de análises de cada tipo (foto, anúncio, YouTube) usando MeterGroup do PrimeVue. Os dados SHALL ser obtidos via `PhotoAnalysisService.listResults(1,1)`, `AdAnalysisService.listResults(1,1)` e `YouTubeAnalysisService.listResults(1,1)` — usando o campo `total` da resposta.
@@ -113,13 +124,3 @@ A análise de foto (upload + display + dashboard) SHALL ser movida para a rota `
 - **WHEN** usuário não autenticado navega para `/photo-analysis`
 - **THEN** router guard redireciona para `/login`
 
-### Requirement: MainLayout atualizado
-O MainLayout SHALL ter header title "Análise de mídias" e menu atualizado com "Início" → `/` e "Análise de foto" → `/photo-analysis`.
-
-#### Scenario: Menu items atualizados
-- **WHEN** sidebar renderiza
-- **THEN** menu inclui item "Início" com icon `pi-home` navegando para `/`, e item "Análise de foto" com icon `pi-upload` navegando para `/photo-analysis`
-
-#### Scenario: Header title
-- **WHEN** MainLayout renderiza
-- **THEN** header exibe "Análise de mídias"

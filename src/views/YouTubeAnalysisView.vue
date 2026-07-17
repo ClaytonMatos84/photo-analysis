@@ -1,57 +1,56 @@
 <template>
     <MainLayout>
-        <template #default>
-            <main class="upload-main">
-                <header class="upload-header prime-header">
-                    <span class="prime-header-title">
-                        <i class="pi pi-youtube"></i> Analise de video do YouTube
-                    </span>
-                    <p class="prime-header-desc">
-                        Informe a URL do video do YouTube para iniciar a analise.
-                    </p>
+        <PageHero
+            title="Análise de vídeo do YouTube"
+            icon="pi pi-youtube"
+            description="Informe a URL do vídeo do YouTube para iniciar a análise."
+        >
+            <div class="url-form" v-animateonscroll="{ enterClass: 'animate-zoom-in' }">
+                <InputText
+                    v-model="youtubeUrl"
+                    placeholder="https://www.youtube.com/watch?v=PsquuVU6zJg"
+                    class="url-input"
+                    :disabled="isLoading"
+                />
+                <Button
+                    label="Analisar video"
+                    icon="pi pi-play"
+                    :loading="isLoading"
+                    :disabled="isLoading || !isYoutubeUrlValid"
+                    @click="handleAnalyze"
+                />
+            </div>
 
-                    <div class="url-form">
-                        <InputText
-                            v-model="youtubeUrl"
-                            placeholder="https://www.youtube.com/watch?v=PsquuVU6zJg"
-                            class="url-input"
-                            :disabled="isLoading"
-                        />
-                        <Button
-                            label="Analisar video"
-                            icon="pi pi-play"
-                            :loading="isLoading"
-                            :disabled="isLoading || !isYoutubeUrlValid"
-                            @click="handleAnalyze"
-                        />
-                    </div>
+            <Message v-if="errorMessage" severity="error" :closable="false" class="youtube-error">
+                {{ errorMessage }}
+            </Message>
+        </PageHero>
 
-                    <Message v-if="errorMessage" severity="error" :closable="false" class="youtube-error">
-                        {{ errorMessage }}
-                    </Message>
-                </header>
-
-                <section v-if="analysisResult && submittedVideoId" class="video-preview-card">
-                    <h3>Pre-visualizacao do video</h3>
-                    <div class="video-frame-wrapper">
-                        <iframe
-                            :src="embedUrl"
-                            title="Player do YouTube"
-                            class="video-frame"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen
-                        ></iframe>
-                    </div>
-                </section>
-
-                <div v-if="isLoading" class="analysis-loading">
-                    <ProgressSpinner strokeWidth="4" />
-                    <span>A analise de video pode levar alguns instantes...</span>
+        <main class="upload-main">
+            <section v-if="analysisResult && submittedVideoId" class="video-preview-card">
+                <h3>Pre-visualizacao do video</h3>
+                <div class="video-frame-wrapper">
+                    <iframe
+                        :src="embedUrl"
+                        title="Player do YouTube"
+                        class="video-frame"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                    ></iframe>
                 </div>
+            </section>
 
-                <YouTubeAnalysisDashboard v-if="analysisResult" :result="analysisResult" />
-            </main>
-        </template>
+            <div v-if="isLoading" class="analysis-loading">
+                <ProgressSpinner strokeWidth="4" />
+                <span>A analise de video pode levar alguns instantes...</span>
+            </div>
+
+            <YouTubeAnalysisDashboard
+                v-if="analysisResult"
+                v-animateonscroll="{ enterClass: 'animate-slide-bottom' }"
+                :result="analysisResult"
+            />
+        </main>
     </MainLayout>
 </template>
 
@@ -59,6 +58,7 @@
 import { computed, ref } from 'vue'
 import axios from 'axios'
 import MainLayout from '@/components/utils/MainLayout.vue'
+import PageHero from '@/components/utils/PageHero.vue'
 import YouTubeAnalysisDashboard from '@/components/youtube/YouTubeAnalysisDashboard.vue'
 import YouTubeAnalysisService from '@/services/YouTubeAnalysisService'
 import type { YouTubeAnalysisResult } from '@/types/YouTubeAnalysisTypes'
@@ -164,45 +164,10 @@ async function handleAnalyze() {
     align-items: center;
     gap: 1.5rem;
     color: #0f172a;
-}
-
-.prime-header {
+    padding: 1.5rem 1rem 2rem;
+    max-width: 1280px;
+    margin: 0 auto;
     width: 100%;
-    background: #fff;
-    border-radius: 14px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    padding: 2rem 2.5rem;
-    margin-bottom: 0.5rem;
-    text-align: center;
-    border: 1px solid #e5e7eb;
-}
-
-.prime-header-title {
-    color: #1f2937;
-    font-size: 1.6rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    justify-content: center;
-    margin-bottom: 0.75rem;
-    letter-spacing: -0.3px;
-}
-
-.prime-header-title .pi {
-    color: #4287f5;
-    font-size: 1.4rem;
-}
-
-.prime-header-desc {
-    font-size: 1.05rem;
-    color: #374151;
-    background: #f5f7fb;
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-    margin: 0 auto 1.25rem auto;
-    display: inline-block;
-    border: 1px solid #e5e7eb;
 }
 
 .url-form {
@@ -271,10 +236,6 @@ async function handleAnalyze() {
 }
 
 @media (max-width: 900px) {
-    .prime-header {
-        padding: 1.2rem;
-    }
-
     .url-input {
         min-width: 100%;
     }
@@ -282,6 +243,37 @@ async function handleAnalyze() {
     .url-form {
         flex-direction: column;
         align-items: stretch;
+    }
+}
+
+/* Animations */
+.animate-zoom-in {
+    animation: zoomIn 0.5s ease-out both;
+}
+
+.animate-slide-bottom {
+    animation: slideBottom 0.6s ease-out both;
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideBottom {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 </style>

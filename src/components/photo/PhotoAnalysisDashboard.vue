@@ -85,4 +85,20 @@ defineProps<{ result: PhotoAnalysisResult; imageFile?: File }>();
         min-height: unset;
     }
 }
+
+/* Animation */
+.animate-slide-bottom {
+    animation: slideBottom 0.6s ease-out both;
+}
+
+@keyframes slideBottom {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 </style>

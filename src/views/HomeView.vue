@@ -1,37 +1,67 @@
 <template>
-    <div class="home-page">
-        <HomeHeader />
-        <main class="home-content">
-            <HomeHero />
-            <HomeStats />
-            <HomeFeatures />
-            <HomeHowItWorks />
-            <HomeCarousel />
-        </main>
-        <HomeFooter />
-    </div>
+    <MainLayout>
+        <PageHero
+            title="Análise de Mídias"
+            icon="pi pi-images"
+            description="Utilize o poder da inteligência artificial para analisar fotos, anúncios e vídeos do YouTube com insights detalhados e automáticos."
+        >
+            <Button
+                label="Começar Agora"
+                icon="pi pi-arrow-right"
+                iconPos="right"
+                class="home-hero-cta"
+                @click="router.push('/photo-analysis')"
+                size="large"
+            />
+        </PageHero>
+        <HomeStats />
+        <HomeFeatures />
+        <HomeHowItWorks />
+        <HomeCarousel />
+    </MainLayout>
 </template>
 
 <script setup lang="ts">
-import HomeHeader from '@/components/home/HomeHeader.vue'
-import HomeHero from '@/components/home/HomeHero.vue'
+import { useRouter } from 'vue-router'
+import Button from 'primevue/button'
+import MainLayout from '@/components/utils/MainLayout.vue'
+import PageHero from '@/components/utils/PageHero.vue'
 import HomeStats from '@/components/home/HomeStats.vue'
 import HomeFeatures from '@/components/home/HomeFeatures.vue'
 import HomeHowItWorks from '@/components/home/HomeHowItWorks.vue'
 import HomeCarousel from '@/components/home/HomeCarousel.vue'
-import HomeFooter from '@/components/home/HomeFooter.vue'
+
+const router = useRouter()
 </script>
 
 <style scoped>
-.home-page {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background: #fff;
+.home-hero-cta {
+    width: 100%;
 }
 
-.home-content {
-    flex: 1;
-    scroll-behavior: smooth;
+:deep(.home-hero-cta.p-button) {
+    background: #fff;
+    color: #357ae8;
+    font-weight: 700;
+    border: none;
+    padding: 0.85rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    width: 100%;
+}
+
+:deep(.home-hero-cta.p-button:hover) {
+    background: #f0f4ff;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+}
+
+@media (min-width: 1024px) {
+    .home-hero-cta {
+        width: auto;
+    }
+
+    :deep(.home-hero-cta.p-button) {
+        width: auto;
+    }
 }
 </style>

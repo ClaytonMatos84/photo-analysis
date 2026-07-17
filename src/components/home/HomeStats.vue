@@ -40,7 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import Card from 'primevue/card'
 import MeterGroup from 'primevue/metergroup'
 import ProgressSpinner from 'primevue/progressspinner'

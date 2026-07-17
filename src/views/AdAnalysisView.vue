@@ -1,63 +1,62 @@
 <template>
     <MainLayout>
-        <template #default>
-            <main class="upload-main">
-                <header class="upload-header prime-header">
-                    <span class="prime-header-title">
-                        <i class="pi pi-megaphone"></i> Análise de anúncio por URL
-                    </span>
-                    <p class="prime-header-desc">
-                        Informe a URL da imagem do anúncio para iniciar a análise estratégica.
-                    </p>
+        <PageHero
+            title="Análise de anúncio por URL"
+            icon="pi pi-megaphone"
+            description="Informe a URL da imagem do anúncio para iniciar a análise estratégica."
+        >
+            <div class="url-form" v-animateonscroll="{ enterClass: 'animate-zoom-in' }">
+                <InputText
+                    v-model="imageUrl"
+                    placeholder="https://exemplo.com/imagem-do-anuncio.jpg"
+                    class="url-input"
+                    :disabled="isLoading"
+                />
+                <Button
+                    label="Analisar anúncio"
+                    icon="pi pi-search"
+                    :loading="isLoading"
+                    :disabled="isLoading || !isImageUrlValid"
+                    @click="handleAnalyze"
+                />
+            </div>
 
-                    <div class="url-form">
-                        <InputText
-                            v-model="imageUrl"
-                            placeholder="https://exemplo.com/imagem-do-anuncio.jpg"
-                            class="url-input"
-                            :disabled="isLoading"
-                        />
-                        <Button
-                            label="Analisar anúncio"
-                            icon="pi pi-search"
-                            :loading="isLoading"
-                            :disabled="isLoading || !isImageUrlValid"
-                            @click="handleAnalyze"
-                        />
-                    </div>
+            <Message v-if="errorMessage" severity="error" :closable="false" class="ad-error">
+                {{ errorMessage }}
+            </Message>
+        </PageHero>
 
-                    <Message v-if="errorMessage" severity="error" :closable="false" class="ad-error">
-                        {{ errorMessage }}
+        <main class="upload-main">
+            <section v-if="imageUrl.trim()" class="image-preview-card">
+                <h3>Pré-visualização da imagem</h3>
+                <Message v-if="!isImageUrlValid" severity="warn" :closable="false">
+                    Informe uma URL válida iniciando com http:// ou https://.
+                </Message>
+                <template v-else>
+                    <img
+                        :src="imageUrl.trim()"
+                        alt="Pré-visualização do anúncio"
+                        class="preview-image"
+                        @error="hasPreviewError = true"
+                        @load="hasPreviewError = false"
+                    />
+                    <Message v-if="hasPreviewError" severity="warn" :closable="false" class="preview-warning">
+                        Não foi possível carregar a imagem com a URL informada.
                     </Message>
-                </header>
+                </template>
+            </section>
 
-                <section v-if="imageUrl.trim()" class="image-preview-card">
-                    <h3>Pré-visualização da imagem</h3>
-                    <Message v-if="!isImageUrlValid" severity="warn" :closable="false">
-                        Informe uma URL válida iniciando com http:// ou https://.
-                    </Message>
-                    <template v-else>
-                        <img
-                            :src="imageUrl.trim()"
-                            alt="Pré-visualização do anúncio"
-                            class="preview-image"
-                            @error="hasPreviewError = true"
-                            @load="hasPreviewError = false"
-                        />
-                        <Message v-if="hasPreviewError" severity="warn" :closable="false" class="preview-warning">
-                            Não foi possível carregar a imagem com a URL informada.
-                        </Message>
-                    </template>
-                </section>
+            <div v-if="isLoading" class="analysis-loading">
+                <ProgressSpinner strokeWidth="4" />
+                <span>A análise de anúncio pode levar alguns instantes...</span>
+            </div>
 
-                <div v-if="isLoading" class="analysis-loading">
-                    <ProgressSpinner strokeWidth="4" />
-                    <span>A análise de anúncio pode levar alguns instantes...</span>
-                </div>
-
-                <AdAnalysisDashboard v-if="analysisResult" :result="analysisResult" />
-            </main>
-        </template>
+            <AdAnalysisDashboard
+                v-if="analysisResult"
+                v-animateonscroll="{ enterClass: 'animate-slide-bottom' }"
+                :result="analysisResult"
+            />
+        </main>
     </MainLayout>
 </template>
 
@@ -65,6 +64,7 @@
 import { computed, ref } from 'vue'
 import axios from 'axios'
 import MainLayout from '@/components/utils/MainLayout.vue'
+import PageHero from '@/components/utils/PageHero.vue'
 import AdAnalysisDashboard from '@/components/ad/AdAnalysisDashboard.vue'
 import AdAnalysisService from '@/services/AdAnalysisService'
 import type { AdAnalysisResult } from '@/types/AdAnalysisTypes'
@@ -135,45 +135,10 @@ async function handleAnalyze() {
     align-items: center;
     gap: 1.5rem;
     color: #0f172a;
-}
-
-.prime-header {
+    padding: 1.5rem 1rem 2rem;
+    max-width: 1280px;
+    margin: 0 auto;
     width: 100%;
-    background: #fff;
-    border-radius: 14px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    padding: 2rem 2.5rem;
-    margin-bottom: 0.5rem;
-    text-align: center;
-    border: 1px solid #e5e7eb;
-}
-
-.prime-header-title {
-    color: #1f2937;
-    font-size: 1.6rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    justify-content: center;
-    margin-bottom: 0.75rem;
-    letter-spacing: -0.3px;
-}
-
-.prime-header-title .pi {
-    color: #4287f5;
-    font-size: 1.4rem;
-}
-
-.prime-header-desc {
-    font-size: 1.05rem;
-    color: #374151;
-    background: #f5f7fb;
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-    margin: 0 auto 1.25rem auto;
-    display: inline-block;
-    border: 1px solid #e5e7eb;
 }
 
 .url-form {
@@ -240,10 +205,6 @@ async function handleAnalyze() {
 }
 
 @media (max-width: 900px) {
-    .prime-header {
-        padding: 1.2rem;
-    }
-
     .url-input {
         min-width: 100%;
     }
@@ -251,6 +212,37 @@ async function handleAnalyze() {
     .url-form {
         flex-direction: column;
         align-items: stretch;
+    }
+}
+
+/* Animations */
+.animate-zoom-in {
+    animation: zoomIn 0.5s ease-out both;
+}
+
+.animate-slide-bottom {
+    animation: slideBottom 0.6s ease-out both;
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideBottom {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 </style>

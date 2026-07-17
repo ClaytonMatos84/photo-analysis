@@ -1,74 +1,64 @@
 <template>
     <MainLayout>
-        <template #default>
-            <main class="top-videos-main">
-                <header class="prime-header">
-                    <span class="prime-header-title">
-                        <i class="pi pi-chart-bar"></i> Top Vídeos do YouTube
-                    </span>
-                    <p class="prime-header-desc">
-                        Veja os vídeos mais assistidos e mais curtidos
-                        das suas análises do YouTube.
-                    </p>
+        <PageHero
+            title="Top Vídeos do YouTube"
+            icon="pi pi-chart-bar"
+            description="Veja os vídeos mais assistidos e mais curtidos das suas análises do YouTube."
+        >
+            <div class="limit-control">
+                <label for="limitSlider" class="limit-label">Quantidade: {{ limit }}</label>
+                <Slider
+                    v-model="limit"
+                    :min="3"
+                    :max="10"
+                    :step="1"
+                    inputId="limitSlider"
+                    class="limit-slider"
+                />
+            </div>
 
-                    <div class="limit-control">
-                        <label for="limitSlider" class="limit-label">Quantidade: {{ limit }}</label>
-                        <Slider
-                            v-model="limit"
-                            :min="3"
-                            :max="10"
-                            :step="1"
-                            inputId="limitSlider"
-                            class="limit-slider"
-                        />
-                    </div>
+            <Message v-if="errorMessage" severity="error" :closable="false" class="top-error">
+                {{ errorMessage }}
+            </Message>
+        </PageHero>
 
-                    <Message
-                        v-if="errorMessage"
-                        severity="error"
-                        :closable="false"
-                        class="top-error"
-                    >
-                        {{ errorMessage }}
-                    </Message>
-                </header>
-
-                <section class="top-videos-tabs">
-                    <Tabs value="topLikes">
-                        <TabList>
-                            <Tab value="topLikes">
-                                <i class="pi pi-heart"></i> Top Likes
-                            </Tab>
-                            <Tab value="topViews">
-                                <i class="pi pi-eye"></i> Top Visualizações
-                            </Tab>
-                        </TabList>
-                        <TabPanels>
-                            <TabPanel value="topLikes">
-                                <YouTubeTopVideosList
-                                    :videos="topLikes"
-                                    metric="likeCount"
-                                    :loading="loadingLikes"
-                                />
-                            </TabPanel>
-                            <TabPanel value="topViews">
-                                <YouTubeTopVideosList
-                                    :videos="topViews"
-                                    metric="viewCount"
-                                    :loading="loadingViews"
-                                />
-                            </TabPanel>
-                        </TabPanels>
-                    </Tabs>
-                </section>
-            </main>
-        </template>
+        <main class="top-videos-main">
+            <section class="top-videos-tabs">
+                <Tabs value="topLikes">
+                    <TabList>
+                        <Tab value="topLikes">
+                            <i class="pi pi-heart"></i> Top Likes
+                        </Tab>
+                        <Tab value="topViews">
+                            <i class="pi pi-eye"></i> Top Visualizações
+                        </Tab>
+                    </TabList>
+                    <TabPanels>
+                        <TabPanel value="topLikes">
+                            <YouTubeTopVideosList
+                                :videos="topLikes"
+                                metric="likeCount"
+                                :loading="loadingLikes"
+                            />
+                        </TabPanel>
+                        <TabPanel value="topViews">
+                            <YouTubeTopVideosList
+                                :videos="topViews"
+                                metric="viewCount"
+                                :loading="loadingViews"
+                            />
+                        </TabPanel>
+                    </TabPanels>
+                </Tabs>
+            </section>
+        </main>
     </MainLayout>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import MainLayout from '@/components/utils/MainLayout.vue'
+import PageHero from '@/components/utils/PageHero.vue'
 import YouTubeTopVideosList from '@/components/youtube/YouTubeTopVideosList.vue'
 import YouTubeAnalysisService from '@/services/YouTubeAnalysisService'
 import Slider from 'primevue/slider'
@@ -137,45 +127,10 @@ onMounted(() => {
     align-items: center;
     gap: 1.5rem;
     color: #0f172a;
-}
-
-.prime-header {
+    padding: 1.5rem 1rem 2rem;
+    max-width: 1280px;
+    margin: 0 auto;
     width: 100%;
-    background: #fff;
-    border-radius: 14px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    padding: 2rem 2.5rem;
-    margin-bottom: 0.5rem;
-    text-align: center;
-    border: 1px solid #e5e7eb;
-}
-
-.prime-header-title {
-    color: #1f2937;
-    font-size: 1.6rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    justify-content: center;
-    margin-bottom: 0.75rem;
-    letter-spacing: -0.3px;
-}
-
-.prime-header-title .pi {
-    color: #4287f5;
-    font-size: 1.4rem;
-}
-
-.prime-header-desc {
-    font-size: 1.05rem;
-    color: #374151;
-    background: #f5f7fb;
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-    margin: 0 auto 1.25rem auto;
-    display: inline-block;
-    border: 1px solid #e5e7eb;
 }
 
 .limit-control {
@@ -187,7 +142,7 @@ onMounted(() => {
 }
 
 .limit-label {
-    color: #374151;
+    color: #fff;
     font-size: 1rem;
     font-weight: 600;
 }
@@ -203,11 +158,5 @@ onMounted(() => {
 
 .top-videos-tabs {
     width: 100%;
-}
-
-@media (max-width: 900px) {
-    .prime-header {
-        padding: 1.2rem;
-    }
 }
 </style>

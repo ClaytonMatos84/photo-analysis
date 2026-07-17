@@ -1,27 +1,30 @@
 <template>
     <MainLayout>
-        <template #default>
-            <main class="upload-main">
-                <header class="upload-header prime-header">
-                    <span class="prime-header-title">
-                        <i class="pi pi-upload"></i> Enviar imagem
-                    </span>
-                    <p class="prime-header-desc">
-                        Envie uma imagem nos formatos <strong>PNG, JPG ou JPEG</strong> para análise.
-                    </p>
-
-                    <PhotoUploadForm @file="handleFile" @analysis="handleAnalysis" />
-                </header>
-                <PhotoDisplay v-if="imageFile" :imageFile="imageFile" />
-                <PhotoAnalysisDashboard v-if="analysisResult" :result="analysisResult" :imageFile="imageFile" />
-            </main>
-        </template>
+        <PageHero
+            title="Enviar imagem"
+            icon="pi pi-upload"
+            description="Envie uma imagem nos formatos PNG, JPG ou JPEG para análise."
+        >
+            <div v-animateonscroll="{ enterClass: 'animate-zoom-in' }">
+                <PhotoUploadForm @file="handleFile" @analysis="handleAnalysis" />
+            </div>
+        </PageHero>
+        <main class="upload-main">
+            <PhotoDisplay v-if="imageFile" :imageFile="imageFile" />
+            <PhotoAnalysisDashboard
+                v-if="analysisResult"
+                v-animateonscroll="{ enterClass: 'animate-slide-bottom' }"
+                :result="analysisResult"
+                :imageFile="imageFile"
+            />
+        </main>
     </MainLayout>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import MainLayout from '@/components/utils/MainLayout.vue'
+import PageHero from '@/components/utils/PageHero.vue'
 import PhotoUploadForm from '@/components/photo/PhotoUploadForm.vue'
 import PhotoAnalysisDashboard from '@/components/photo/PhotoAnalysisDashboard.vue'
 import PhotoDisplay from '@/components/photo/PhotoDisplay.vue'
@@ -46,44 +49,40 @@ function handleAnalysis(result: PhotoAnalysisResult) {
     align-items: center;
     gap: 1.5rem;
     color: #0f172a;
-}
-
-.prime-header {
+    padding: 1.5rem 1rem 2rem;
+    max-width: 1280px;
+    margin: 0 auto;
     width: 100%;
-    background: #fff;
-    border-radius: 14px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    padding: 2rem 2.5rem;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    border: 1px solid #e5e7eb;
 }
 
-.prime-header-title {
-    color: #1f2937;
-    font-size: 1.6rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    justify-content: center;
-    margin-bottom: 0.75rem;
-    letter-spacing: -0.3px;
+/* Animations */
+.animate-zoom-in {
+    animation: zoomIn 0.5s ease-out both;
 }
 
-.prime-header-title .pi {
-    color: #4287f5;
-    font-size: 1.4rem;
+.animate-slide-bottom {
+    animation: slideBottom 0.6s ease-out both;
 }
 
-.prime-header-desc {
-    font-size: 1.05rem;
-    color: #374151;
-    background: #f5f7fb;
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-    margin: 0 auto 1.25rem auto;
-    display: inline-block;
-    border: 1px solid #e5e7eb;
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideBottom {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 </style>

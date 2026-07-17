@@ -1,7 +1,7 @@
 <template>
-    <footer class="home-footer">
+    <footer class="app-footer">
         <span>© {{ year }} Análise de Mídias — Desenvolvido com PrimeVue</span>
-        <router-link to="/profile" class="home-footer-link">Meu Perfil</router-link>
+        <router-link to="/profile" class="app-footer-link">Meu Perfil</router-link>
     </footer>
 </template>
 
@@ -10,7 +10,7 @@ const year = new Date().getFullYear()
 </script>
 
 <style scoped>
-.home-footer {
+.app-footer {
     background: #1f2937;
     color: #d1d5db;
     text-align: center;
@@ -22,18 +22,18 @@ const year = new Date().getFullYear()
     gap: 0.5rem;
 }
 
-.home-footer-link {
+.app-footer-link {
     color: #93c5fd;
     text-decoration: none;
     font-size: 0.8rem;
 }
 
-.home-footer-link:hover {
+.app-footer-link:hover {
     text-decoration: underline;
 }
 
 @media (min-width: 768px) {
-    .home-footer {
+    .app-footer {
         flex-direction: row;
         justify-content: center;
         gap: 1.5rem;
