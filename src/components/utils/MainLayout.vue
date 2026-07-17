@@ -1,7 +1,7 @@
 <template>
     <div class="main-layout">
         <header class="header">
-            <h1>Análise de imagem</h1>
+            <h1>Análise de mídias</h1>
             <div class="header-user" v-if="authStore.userEmail">
                 <Chip
                     v-if="userDisplayName"
@@ -77,7 +77,8 @@ function handleLogout() {
 }
 
 const menuItems = [
-    { label: 'Enviar Análise', icon: 'pi pi-upload', command: () => router.push('/') },
+    { label: 'Início', icon: 'pi pi-home', command: () => router.push('/') },
+    { label: 'Análise de foto', icon: 'pi pi-upload', command: () => router.push('/photo-analysis') },
     {
         label: 'Análise de anúncio',
         icon: 'pi pi-megaphone',
