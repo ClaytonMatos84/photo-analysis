@@ -27,6 +27,11 @@
         </PageHero>
 
         <main class="upload-main">
+            <AnalysisEmptyState
+                v-if="showEmptyState"
+                :steps="youtubeEmptyStateSteps"
+                :benefits="youtubeEmptyStateBenefits"
+            />
             <section v-if="analysisResult && submittedVideoId" class="video-preview-card">
                 <h3>Pre-visualizacao do video</h3>
                 <div class="video-frame-wrapper">
@@ -60,6 +65,8 @@ import axios from 'axios'
 import MainLayout from '@/components/utils/MainLayout.vue'
 import PageHero from '@/components/utils/PageHero.vue'
 import YouTubeAnalysisDashboard from '@/components/youtube/YouTubeAnalysisDashboard.vue'
+import AnalysisEmptyState from '@/components/utils/AnalysisEmptyState.vue'
+import { youtubeEmptyStateSteps, youtubeEmptyStateBenefits } from '@/content/youtubeEmptyState'
 import YouTubeAnalysisService from '@/services/YouTubeAnalysisService'
 import type { YouTubeAnalysisResult } from '@/types/YouTubeAnalysisTypes'
 import InputText from 'primevue/inputtext'
@@ -77,6 +84,8 @@ const analysisResult = ref<YouTubeAnalysisResult | null>(null)
 
 const { handleError } = useErrorHandler()
 const { showSuccess } = useToast()
+
+const showEmptyState = computed(() => !analysisResult.value)
 
 function extractYoutubeVideoId(urlValue: string): string {
     const normalizedUrl = urlValue.trim()

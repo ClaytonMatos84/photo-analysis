@@ -10,7 +10,12 @@
             </div>
         </PageHero>
         <main class="upload-main">
-            <PhotoDisplay v-if="imageFile" :imageFile="imageFile" />
+            <AnalysisEmptyState
+                v-if="showEmptyState"
+                :steps="photoEmptyStateSteps"
+                :benefits="photoEmptyStateBenefits"
+            />
+            <PhotoDisplay v-if="imageFile && analysisResult" :imageFile="imageFile" />
             <PhotoAnalysisDashboard
                 v-if="analysisResult"
                 v-animateonscroll="{ enterClass: 'animate-slide-bottom' }"
@@ -22,19 +27,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import MainLayout from '@/components/utils/MainLayout.vue'
 import PageHero from '@/components/utils/PageHero.vue'
 import PhotoUploadForm from '@/components/photo/PhotoUploadForm.vue'
 import PhotoAnalysisDashboard from '@/components/photo/PhotoAnalysisDashboard.vue'
 import PhotoDisplay from '@/components/photo/PhotoDisplay.vue'
+import AnalysisEmptyState from '@/components/utils/AnalysisEmptyState.vue'
+import { photoEmptyStateSteps, photoEmptyStateBenefits } from '@/content/photoEmptyState'
 import type { PhotoAnalysisResult } from '@/types/PhotoAnalysisTypes'
 
 const analysisResult = ref<PhotoAnalysisResult | null>(null)
 const imageFile = ref<File | undefined>(undefined)
 
+const showEmptyState = computed(() => !analysisResult.value)
+
 function handleFile(file: File) {
     imageFile.value = file
+    analysisResult.value = null
 }
 
 function handleAnalysis(result: PhotoAnalysisResult) {

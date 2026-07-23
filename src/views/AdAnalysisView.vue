@@ -27,6 +27,11 @@
         </PageHero>
 
         <main class="upload-main">
+            <AnalysisEmptyState
+                v-if="showEmptyState"
+                :steps="adEmptyStateSteps"
+                :benefits="adEmptyStateBenefits"
+            />
             <section v-if="imageUrl.trim()" class="image-preview-card">
                 <h3>Pré-visualização da imagem</h3>
                 <Message v-if="!isImageUrlValid" severity="warn" :closable="false">
@@ -66,6 +71,8 @@ import axios from 'axios'
 import MainLayout from '@/components/utils/MainLayout.vue'
 import PageHero from '@/components/utils/PageHero.vue'
 import AdAnalysisDashboard from '@/components/ad/AdAnalysisDashboard.vue'
+import AnalysisEmptyState from '@/components/utils/AnalysisEmptyState.vue'
+import { adEmptyStateSteps, adEmptyStateBenefits } from '@/content/adEmptyState'
 import AdAnalysisService from '@/services/AdAnalysisService'
 import type { AdAnalysisResult } from '@/types/AdAnalysisTypes'
 import InputText from 'primevue/inputtext'
@@ -98,6 +105,8 @@ const isImageUrlValid = computed(() => {
         return false
     }
 })
+
+const showEmptyState = computed(() => !isImageUrlValid.value && !analysisResult.value)
 
 async function handleAnalyze() {
     if (!isImageUrlValid.value) {

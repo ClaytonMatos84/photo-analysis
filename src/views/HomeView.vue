@@ -16,7 +16,7 @@
         </PageHero>
         <HomeStats />
         <HomeFeatures />
-        <HomeHowItWorks />
+        <StepsSection :steps="homeHowItWorksSteps" />
         <HomeCarousel />
     </MainLayout>
 </template>
@@ -28,8 +28,9 @@ import MainLayout from '@/components/utils/MainLayout.vue'
 import PageHero from '@/components/utils/PageHero.vue'
 import HomeStats from '@/components/home/HomeStats.vue'
 import HomeFeatures from '@/components/home/HomeFeatures.vue'
-import HomeHowItWorks from '@/components/home/HomeHowItWorks.vue'
+import StepsSection from '@/components/utils/StepsSection.vue'
 import HomeCarousel from '@/components/home/HomeCarousel.vue'
+import { homeHowItWorksSteps } from '@/content/homeHowItWorks'
 
 const router = useRouter()
 </script>
